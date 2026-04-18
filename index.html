@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NestEzyy — Find Verified PG/Room Near You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F7F5F0;
+      --white: #ffffff;
+      --ink: #1A1A2E;
+      --ink-soft: #4A4A6A;
+      --accent: #FF6B35;
+      --accent-light: #FFF0EB;
+      --accent2: #2D6A4F;
+      --border: #E5E3DC;
+      --shadow: 0 4px 24px rgba(26, 26, 46, 0.08);
+      --radius: 14px;
+      --font-head: 'Sora', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* ── BACKGROUND with subtle PG/homestay SVG pattern ── */
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-color: #F7F5F0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg fill='none' stroke='%23C8C4B8' stroke-width='1' opacity='0.45'%3E%3C!-- Building 1 --%3E%3Crect x='18' y='80' width='48' height='60' rx='2'/%3E%3Crect x='26' y='92' width='12' height='14' rx='1'/%3E%3Crect x='46' y='92' width='12' height='14' rx='1'/%3E%3Crect x='36' y='118' width='12' height='22'/%3E%3Cpolygon points='14,80 42,52 70,80'/%3E%3C!-- Building 2 / multi-floor --%3E%3Crect x='90' y='60' width='36' height='80' rx='2'/%3E%3Crect x='97' y='70' width='10' height='10' rx='1'/%3E%3Crect x='113' y='70' width='10' height='10' rx='1'/%3E%3Crect x='97' y='88' width='10' height='10' rx='1'/%3E%3Crect x='113' y='88' width='10' height='10' rx='1'/%3E%3Crect x='97' y='106' width='10' height='10' rx='1'/%3E%3Crect x='113' y='106' width='10' height='10' rx='1'/%3E%3Crect x='101' y='124' width='14' height='16'/%3E%3Cline x1='90' y1='60' x2='108' y2='44'/%3E%3Cline x1='126' y1='60' x2='108' y2='44'/%3E%3C!-- Study desk --%3E%3Crect x='160' y='108' width='50' height='6' rx='1'/%3E%3Crect x='163' y='114' width='4' height='20' rx='1'/%3E%3Crect x='203' y='114' width='4' height='20' rx='1'/%3E%3Crect x='172' y='90' width='6' height='18' rx='1'/%3E%3Cellipse cx='175' cy='88' rx='8' ry='5'/%3E%3Cline x1='178' y1='88' x2='192' y2='96'/%3E%3C!-- Small house --%3E%3Crect x='240' y='88' width='44' height='46' rx='2'/%3E%3Cpolygon points='236,88 262,64 288,88'/%3E%3Crect x='250' y='104' width='10' height='12' rx='1'/%3E%3Crect x='266' y='104' width='10' height='12' rx='1'/%3E%3Crect x='255' y='116' width='14' height='18'/%3E%3C!-- Ground line --%3E%3Cline x1='0' y1='140' x2='320' y2='140' stroke-dasharray='4 6'/%3E%3C!-- Row 2: small icons --%3E%3C!-- Bed icon --%3E%3Crect x='30' y='200' width='50' height='28' rx='4'/%3E%3Crect x='30' y='196' width='20' height='10' rx='3'/%3E%3Crect x='60' y='196' width='20' height='10' rx='3'/%3E%3C!-- Book --%3E%3Crect x='120' y='195' width='30' height='36' rx='2'/%3E%3Cline x1='135' y1='195' x2='135' y2='231'/%3E%3Cline x1='124' y1='204' x2='133' y2='204'/%3E%3Cline x1='124' y1='211' x2='133' y2='211'/%3E%3Cline x1='124' y1='218' x2='133' y2='218'/%3E%3C!-- Wardrobe --%3E%3Crect x='185' y='190' width='36' height='46' rx='2'/%3E%3Cline x1='203' y1='190' x2='203' y2='236'/%3E%3Ccircle cx='199' cy='214' r='2'/%3E%3Ccircle cx='207' cy='214' r='2'/%3E%3C!-- fan --%3E%3Ccircle cx='270' cy='210' r='14'/%3E%3Ccircle cx='270' cy='210' r='3'/%3E%3Cellipse cx='270' cy='198' rx='3' ry='6'/%3E%3Cellipse cx='281' cy='217' rx='6' ry='3'/%3E%3Cellipse cx='259' cy='217' rx='6' ry='3'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 320px 320px;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 245, 240, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 0.875rem;
+      font-family: var(--font-head);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover {
+      opacity: 0.88;
+    }
+
+    /* HERO */
+    .hero {
+      background: var(--ink);
+      padding: 56px 24px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, rgba(255, 107, 53, 0.22) 0%, transparent 65%), radial-gradient(ellipse at 20% 100%, rgba(45, 106, 79, 0.18) 0%, transparent 60%);
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255, 107, 53, 0.18);
+      color: #FF9A6C;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-radius: 100px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 7vw, 3rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      position: relative;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 1rem;
+      margin-top: 14px;
+      position: relative;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .pill {
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: rgba(255, 255, 255, 0.8);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 32px;
+      position: relative;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 16px 28px;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      display: block;
+      box-shadow: 0 4px 20px rgba(255, 107, 53, 0.38);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(255, 107, 53, 0.45);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: rgba(255, 255, 255, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.28);
+      border-radius: var(--radius);
+      padding: 15px 28px;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+      display: block;
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* TRUST BAR */
+    .trust-bar {
+      background: var(--accent-light);
+      border-bottom: 1px solid #FFDBC9;
+      padding: 12px 20px;
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .trust-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 0.82rem;
+      color: #B74A1A;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    /* SECTION */
+    .section {
+      padding: 40px 20px;
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.4px;
+    }
+
+    .section-sub {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      margin-top: 4px;
+    }
+
+    /* FORM CARD */
+    .form-card {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      padding: 28px 22px;
+      margin-top: 20px;
+    }
+
+    /* PROGRESS */
+    .progress-wrap {
+      margin-bottom: 24px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+
+    .progress-step-text {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--font-head);
+      white-space: nowrap;
+    }
+
+    .progress-hint {
+      font-size: 0.7rem;
+      color: var(--ink-soft);
+      text-align: right;
+      line-height: 1.3;
+    }
+
+    .progress-bar {
+      display: flex;
+      gap: 6px;
+    }
+
+    .progress-seg {
+      flex: 1;
+      height: 4px;
+      border-radius: 4px;
+      background: var(--border);
+      transition: background 0.4s;
+    }
+
+    .progress-seg.active {
+      background: var(--accent);
+    }
+
+    .progress-seg.done {
+      background: var(--accent2);
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.visible {
+      display: block;
+    }
+
+    .step-section-title {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* FIELDS */
+    .field-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    label .req {
+      color: var(--accent);
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="tel"],
+    select,
+    textarea {
+      width: 100%;
+      background: #FAFAF7;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--ink);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+      background: #fff;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%234A4A6A' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .field-hint {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      margin-top: 5px;
+    }
+
+    .error-msg {
+      font-size: 0.78rem;
+      color: #e53e3e;
+      margin-top: 4px;
+      display: none;
+    }
+
+    .field-group.has-error input,
+    .field-group.has-error select {
+      border-color: #e53e3e;
+    }
+
+    .field-group.has-error .error-msg {
+      display: block;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    /* RENT INCLUDES */
+    .rent-includes {
+      margin-top: 10px;
+    }
+
+    .rent-includes-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin-bottom: 8px;
+    }
+
+    .rent-includes-opts {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .ri-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 13px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: #FAFAF7;
+      user-select: none;
+    }
+
+    .ri-pill input {
+      display: none;
+    }
+
+    .ri-pill:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    /* RADIO PILLS */
+    .radio-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      padding: 9px 16px;
+      cursor: pointer;
+      font-size: 0.87rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      background: #FAFAF7;
+      user-select: none;
+    }
+
+    .radio-pill input {
+      display: none;
+    }
+
+    .radio-pill:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    /* FACILITY CARDS */
+    .facility-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .fac-card {
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #FAFAF7;
+      overflow: hidden;
+      transition: border-color 0.25s, background 0.25s;
+    }
+
+    .fac-card.selected {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .fac-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .fac-icon {
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      width: 26px;
+      text-align: center;
+    }
+
+    .fac-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+      flex: 1;
+    }
+
+    .fac-checkmark {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: #fff;
+      transition: all 0.2s;
+    }
+
+    .fac-card.selected .fac-checkmark {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .fac-checkmark .tick-icon {
+      display: none;
+    }
+
+    .fac-card.selected .fac-checkmark .tick-icon {
+      display: block;
+    }
+
+    .fac-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.3s ease;
+      padding: 0 14px;
+    }
+
+    .fac-card.selected .fac-expand {
+      max-height: 500px;
+      padding: 0 14px 14px;
+    }
+
+    .fac-expand .field-group {
+      margin-bottom: 12px;
+    }
+
+    .fac-expand label {
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+
+    .fac-expand input[type="number"] {
+      padding: 9px 12px;
+      font-size: 0.9rem;
+    }
+
+    /* INLINE CHECK */
+    .inline-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .inline-check input {
+      display: none;
+    }
+
+    .inline-cb {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      transition: all 0.2s;
+    }
+
+    .inline-check:has(input:checked) .inline-cb {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .inline-cb .tick-icon {
+      display: none;
+    }
+
+    .inline-check:has(input:checked) .inline-cb .tick-icon {
+      display: block;
+    }
+
+    .inline-check span {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* SUB SECTIONS */
+    .sub-section {
+      margin-top: 22px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sub-section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+
+    /* CHECKBOX GRID */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FAFAF7;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 11px 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      user-select: none;
+    }
+
+    .check-item:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .check-item input {
+      display: none;
+    }
+
+    .check-box {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      background: #fff;
+    }
+
+    .check-item:has(input:checked) .check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .check-box .tick-icon {
+      display: none;
+    }
+
+    .check-item:has(input:checked) .check-box .tick-icon {
+      display: block;
+    }
+
+    .check-label {
+      font-size: 0.87rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    /* FOOD SUB */
+    .sub-field {
+      margin-top: 12px;
+      padding: 14px;
+      background: var(--accent-light);
+      border-radius: 10px;
+      border: 1px solid #FFDBC9;
+      display: none;
+    }
+
+    .sub-field.visible {
+      display: block;
+    }
+
+    /* FILE UPLOAD — multi-photo */
+    .file-upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      background: #FAFAF7;
+    }
+
+    .file-upload-zone:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+    }
+
+    .file-upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    .upload-text {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+    }
+
+    .upload-text strong {
+      color: var(--accent);
+    }
+
+    .upload-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .preview-thumb {
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1.5px solid var(--border);
+    }
+
+    .preview-item {
+      position: relative;
+      width: 64px;
+      height: 64px;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+      padding-bottom: 2px;
+      transition: transform 0.2s;
+    }
+
+    .remove-btn:hover {
+      transform: scale(1.1);
+      background: #ff1a1a;
+    }
+
+    .preview-count {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    /* Two upload buttons */
+    .upload-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 10px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #FAFAF7;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .upload-btn:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .upload-btn input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    /* STEP NAV */
+    .step-nav {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn-next,
+    .btn-back {
+      flex: 1;
+      padding: 16px;
+      border-radius: var(--radius);
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-next {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(255, 107, 53, 0.28);
+    }
+
+    .btn-next:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-back {
+      background: #FAFAF7;
+      color: var(--ink-soft);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 17px;
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 28px;
+      box-shadow: 0 4px 20px rgba(45, 106, 79, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+    }
+
+    /* SUCCESS */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+
+    .success-screen.visible {
+      display: block;
+    }
+
+    .success-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #48BB78, #2D6A4F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 1.8rem;
+      color: white;
+      box-shadow: 0 8px 28px rgba(45, 106, 79, 0.28);
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-title {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .success-sub {
+      color: var(--ink-soft);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 15px 28px;
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin: 24px auto 0;
+      width: 100%;
+      max-width: 360px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+      transition: opacity 0.2s;
+    }
+
+    .wa-btn:hover {
+      opacity: 0.9;
+    }
+
+    /* WA FLOAT */
+    .wa-float {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      z-index: 99;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #25D366;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      text-decoration: none;
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 4px 32px rgba(37, 211, 102, 0.65);
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 28px 20px 30px;
+      border-top: 1px solid var(--border);
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+    }
+
+    footer strong {
+      color: var(--ink);
+    }
+
+    @media (min-width: 560px) {
+      .hero-btns {
+        flex-direction: row;
+        justify-content: center;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: auto;
+        min-width: 180px;
+      }
+    }
+
+    /* DATA CORRECTION TOAST */
+    .data-toast {
+      position: fixed;
+      bottom: 24px;
+      right: -400px;
+      z-index: 1000;
+      width: 320px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: right 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .data-toast.visible {
+      right: 24px;
+    }
+
+    .data-toast-icon {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .data-toast-content {
+      flex: 1;
+    }
+
+    .data-toast-title {
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .data-toast-text {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+
+    .data-toast-close {
+      background: none;
+      border: none;
+      color: var(--ink-soft);
+      font-size: 1.1rem;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .data-toast-close:hover {
+      opacity: 1;
+    }
+
+    /* CAMERA MODAL */
+    .camera-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(26, 26, 46, 0.85);
+      backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .camera-modal.visible {
+      display: flex;
+    }
+
+    .camera-container {
+      width: 100%;
+      max-width: 500px;
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+
+    .video-wrap {
+      position: relative;
+      background: #000;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #cameraVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .camera-controls {
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      background: #fff;
+    }
+
+    .btn-capture {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 6px solid var(--accent-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-capture:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-capture:active {
+      transform: scale(0.92);
+    }
+
+    .btn-close-camera {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .btn-close-camera:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .shutter-flash {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    @keyframes flash {
+      0% {
+        opacity: 0.8;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .flash-active {
+      animation: flash 0.3s ease-out forwards;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Nest<span>Ezyy</span></div>
+    <a href="#list-pg" class="nav-cta">List Your PG/Room</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-tag">Now in Your City</div>
+    <h1>Find <span>Verified PG/Room</span><br>Near You</h1>
+    <p class="hero-sub">PG/Room + Food + Laundry — All in One Place</p>
+    <div class="hero-pills">
+      <span class="pill">Verified Listings</span>
+      <span class="pill">Mess Included</span>
+      <span class="pill">Laundry Service</span>
+      <span class="pill">Instant Connect</span>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="document.getElementById('list-pg').scrollIntoView({behavior:'smooth'})">List
+        Your PG/Room →</button>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar" style="display: flex; justify-content: center; align-items: center;">
+    <div class="trust-item">
+      Verified by Our Team
+    </div>
+  </div>
+
+  <!-- FORM SECTION -->
+  <section class="section" id="list-pg">
+    <div class="section-title">List Your PG/Room</div>
+    <p class="section-sub">Takes less than 2 minute</p>
+
+    <div class="form-card">
+      <div class="progress-wrap">
+        <div class="progress-meta">
+          <span class="progress-step-text" id="stepLabel">Step 1 of 5</span>
+          <span class="progress-hint">Takes less than 2 min</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-seg active" id="seg0"></div>
+          <div class="progress-seg" id="seg1"></div>
+          <div class="progress-seg" id="seg2"></div>
+          <div class="progress-seg" id="seg3"></div>
+          <div class="progress-seg" id="seg4"></div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 1: Basic Details ══ -->
+      <div class="form-step visible" id="step0">
+        <div class="step-section-title">Basic Details</div>
+
+        <div class="field-group" id="fg-pgname">
+          <label>PG/Room Name <span class="req">*</span></label>
+          <input type="text" id="pgname" placeholder="e.g. Sunrise Boys PG" />
+          <div class="error-msg">Please enter the PG/Room name</div>
+        </div>
+
+        <div class="field-group" id="fg-location">
+          <label>Location / Nearest Landmark <span class="req">*</span></label>
+          <input type="text" id="location" placeholder="e.g. Near Jodhpur University Gate" />
+          <div class="error-msg">Please enter a location</div>
+        </div>
+
+        <!-- PG Type (Girls/Boys) added below landmark -->
+        <div class="field-group" id="fg-pgtype">
+          <label>PG/Room Type <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Boys" /> Boys</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Girls" /> Girls</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Co-ed" /> Co-ed</label>
+          </div>
+          <div class="error-msg">Please select a PG/Room type</div>
+        </div>
+
+        <div class="field-group" id="fg-rent">
+          <label>Monthly Room/PG Rent per Person (₹) <span class="req">*</span></label>
+          <input type="number" id="rent" placeholder="e.g. 6000" min="500" />
+          <div class="error-msg">Please enter monthly rent</div>
+          <div class="rent-includes">
+            <div class="rent-includes-label">Monthly Room/PG Rent (₹) includes:</div>
+            <div class="rent-includes-opts">
+              <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Food" /> Food</label>
+              <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Electricity" />
+                Electricity</label>
+              <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Cooler" /> Cooler</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Security Deposit per Person (₹)</label>
+          <input type="number" id="deposit" placeholder="e.g. 10000" min="0" />
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-next" onclick="nextStep(0)">Next →</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 2: Room Details ══ -->
+      <div class="form-step" id="step1">
+        <div class="step-section-title">Room Details</div>
+
+        <div class="field-group" id="fg-roomtype">
+          <label>Room Type <span class="req">*</span></label>
+          <select id="roomtype">
+            <option value="">Select room type</option>
+            <option value="single">Single Occupancy</option>
+            <option value="double">Double Sharing</option>
+            <option value="triple">Triple Sharing</option>
+            <option value="dorm">Dormitory (4+)</option>
+          </select>
+          <div class="error-msg">Please select a room type</div>
+        </div>
+
+        <div class="two-col">
+          <div class="field-group" id="fg-floor">
+            <label>Floor <span class="req">*</span></label>
+            <select id="floor">
+              <option value="">Select floor</option>
+              <option value="B">Basement</option>
+              <option value="0">Ground Floor</option>
+              <option value="1">1st Floor</option>
+              <option value="2">2nd Floor</option>
+              <option value="3">3rd Floor</option>
+              <option value="4">4th Floor</option>
+              <option value="5">5th Floor</option>
+            </select>
+            <div class="error-msg">Please select a floor</div>
+          </div>
+          <div class="field-group">
+            <label>Room No. <span
+                style="color:var(--ink-soft);font-weight:400;font-size:0.78rem">(optional)</span></label>
+            <select id="roomno">
+              <option value="">Select</option>
+              <optgroup label="Left from entrance">
+                <option value="L1">L1</option>
+                <option value="L2">L2</option>
+                <option value="L3">L3</option>
+                <option value="L4">L4</option>
+                <option value="L5">L5</option>
+              </optgroup>
+              <optgroup label="Right from entrance">
+                <option value="R1">R1</option>
+                <option value="R2">R2</option>
+                <option value="R3">R3</option>
+                <option value="R4">R4</option>
+                <option value="R5">R5</option>
+              </optgroup>
+            </select>
+            <div class="field-hint">L = Left, R = Right from entrance</div>
+          </div>
+        </div>
+
+        <!-- ── MULTI-PHOTO UPLOAD ── -->
+        <div class="field-group" id="fg-photos">
+          <label>Photos/Videos <span class="req">*</span></label>
+          <div class="upload-actions">
+            <!-- Button 1: Gallery (multiple select) -->
+            <div class="upload-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              Upload from Gallery
+              <input type="file" id="photos-gallery" accept="image/*,video/*" multiple onchange="handleFiles(this)" />
+            </div>
+            <!-- Button 2: Custom Camera (Works on Laptop & Mobile) -->
+            <button type="button" class="upload-btn" onclick="openCamera()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+              Take Photos
+            </button>
+          </div>
+          <div class="upload-preview" id="uploadPreview"></div>
+          <div class="preview-count" id="previewCount"></div>
+          <div class="error-msg" id="photos-err">Please upload at least one photo or video</div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(1)">← Back</button>
+          <button class="btn-next" onclick="nextStep(1)">Next →</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 3: Facilities ══ -->
+      <div class="form-step" id="step2">
+        <div class="step-section-title">Available Facilities (Bed, Table, Chair, Almirah, Electrical Appliances, etc.)
+        </div>
+
+        <div class="facility-cards">
+
+          <!-- BED -->
+          <div class="fac-card" id="fac-bed">
+            <div class="fac-card-header" onclick="toggleFac('bed')">
+              <span class="fac-icon">🛏️</span>
+              <span class="fac-title">Bed</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+            <div class="fac-expand">
+              <div class="field-group" id="fg-bed-count"><label>Number of beds <span class="req">*</span></label><input
+                  type="number" id="bed-count" placeholder="e.g. 2" min="1" />
+                <div class="error-msg">Required</div>
+              </div>
+              <label class="inline-check"><input type="checkbox" id="mattress" />
+                <div class="inline-cb"><svg class="tick-icon" width="9" height="7" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span>Mattress Provided</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TABLE -->
+          <div class="fac-card" id="fac-table">
+            <div class="fac-card-header" onclick="toggleFac('table')">
+              <span class="fac-icon">🪑</span>
+              <span class="fac-title">Table</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+            <div class="fac-expand">
+              <div class="field-group" id="fg-table-count"><label>Number of tables <span
+                    class="req">*</span></label><input type="number" id="table-count" placeholder="e.g. 1" min="1" />
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHAIRS -->
+          <div class="fac-card" id="fac-chairs">
+            <div class="fac-card-header" onclick="toggleFac('chairs')">
+              <span class="fac-icon">💺</span>
+              <span class="fac-title">Chairs</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+            <div class="fac-expand">
+              <div class="field-group" id="fg-chair-count"><label>Number of chairs <span
+                    class="req">*</span></label><input type="number" id="chair-count" placeholder="e.g. 2" min="1" />
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- WINDOWS -->
+          <div class="fac-card" id="fac-windows">
+            <div class="fac-card-header" onclick="toggleFac('windows')">
+              <span class="fac-icon">🪟</span>
+              <span class="fac-title">Windows</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+            <div class="fac-expand">
+              <div class="field-group" id="fg-window-count"><label>Number of windows <span
+                    class="req">*</span></label><input type="number" id="window-count" placeholder="e.g. 2" min="1" />
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ALMIRAH -->
+          <div class="fac-card" id="fac-almirah">
+            <div class="fac-card-header" onclick="toggleFac('almirah')">
+              <span class="fac-icon">🗄️</span>
+              <span class="fac-title">Almirah / Wardrobe</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+            <div class="fac-expand">
+              <div class="field-group" id="fg-almirah-count"><label>Number of almirahs <span
+                    class="req">*</span></label><input type="number" id="almirah-count" placeholder="e.g. 1" min="1" />
+                <div class="error-msg">Required</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ELECTRICAL — now includes Fan -->
+          <div class="fac-card selected" id="fac-electrical">
+            <div class="fac-card-header" onclick="toggleFac('electrical')">
+              <span class="fac-icon">🔌</span>
+              <span class="fac-title">Electrical Appliances</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+            <div class="fac-expand">
+              <div class="two-col">
+                <div class="field-group" id="fg-sockets"><label>Power sockets <span class="req">*</span></label><input
+                    type="number" id="sockets" placeholder="e.g. 2" min="0" />
+                  <div class="error-msg">Required</div>
+                </div>
+                <div class="field-group" id="fg-bulbs"><label>Bulbs <span class="req">*</span></label><input
+                    type="number" id="bulbs" placeholder="e.g. 1" min="0" />
+                  <div class="error-msg">Required</div>
+                </div>
+              </div>
+              <div class="two-col">
+                <div class="field-group" id="fg-tubelights"><label>Tube lights <span class="req">*</span></label><input
+                    type="number" id="tubelights" placeholder="e.g. 1" min="0" />
+                  <div class="error-msg">Required</div>
+                </div>
+                <div class="field-group" id="fg-fan-count"><label>Fans <span class="req">*</span></label><input
+                    type="number" id="fan-count" placeholder="e.g. 1" min="0" />
+                  <div class="error-msg">Required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RO WATER -->
+          <div class="fac-card" id="fac-rowater">
+            <div class="fac-card-header" onclick="toggleFac('rowater')">
+              <span class="fac-icon">💧</span>
+              <span class="fac-title">RO Water</span>
+              <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+            </div>
+          </div>
+
+        </div><!-- /facility-cards -->
+
+        <!-- BATHROOM & WASHROOM — separate section -->
+        <div class="sub-section">
+          <div class="sub-section-title">Bathroom &amp; Washroom</div>
+          <div class="field-group" id="fg-bathtype">
+            <label>Type <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-pill"><input type="radio" name="bathtype" value="personal" /> Personal</label>
+              <label class="radio-pill"><input type="radio" name="bathtype" value="common" /> Common / Shared</label>
+            </div>
+            <div class="error-msg">Please select a bathroom type</div>
+          </div>
+          <div class="field-group" id="fg-bathloc">
+            <label>Location <span class="req">*</span></label>
+            <div class="radio-group">
+              <label class="radio-pill"><input type="radio" name="bathloc" value="both-attached" /> Both
+                Attached</label>
+              <label class="radio-pill"><input type="radio" name="bathloc" value="separate" /> Separate</label>
+            </div>
+            <div class="error-msg">Please select a bathroom location</div>
+          </div>
+        </div>
+
+        <!-- WATER & RULES -->
+        <div class="sub-section">
+          <div class="sub-section-title">PG/Room Rules</div>
+          <div class="checkbox-grid">
+            <label class="check-item">
+              <input type="checkbox" name="rule" value="Smoking Allowed" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+              <span class="check-label">Smoking Allowed</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="rule" value="Visitors of Other Gender Welcome" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div>
+              <span class="check-label">Visitors of Other Gender Welcome</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- AMENITIES -->
+        <div class="sub-section">
+          <div class="sub-section-title">Amenities</div>
+          <div class="checkbox-grid">
+            <label class="check-item"><input type="checkbox" name="facility" value="Cooler" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Cooler</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="AC" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">AC</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Wi-Fi" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Wi-Fi</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Power Backup" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Inverter</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(2)">← Back</button>
+          <button class="btn-next" onclick="nextStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 4: Food & Timings ══ -->
+      <div class="form-step" id="step3">
+        <div class="step-section-title">Food &amp; Gate Timings</div>
+
+        <div class="field-group">
+          <label>Food provided at Room/PG</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="food" value="Yes" onchange="toggleFoodSub('yes')" />
+              Yes</label>
+            <label class="radio-pill"><input type="radio" name="food" value="No" onchange="toggleFoodSub('no')" />
+              No</label>
+          </div>
+          <div class="sub-field" id="foodSub">
+            <label>Meal Frequency</label>
+            <div class="radio-group">
+              <label class="radio-pill"><input type="radio" name="foodfreq" value="2 times a day" /> 2 times/day</label>
+              <label class="radio-pill"><input type="radio" name="foodfreq" value="3 times a day" /> 3 times/day</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mess/Tiffin Details — shown when food = No -->
+        <div id="messSection"
+          style="display:none; background:#FAFAF7; border:1.5px solid var(--border); border-radius:14px; padding:18px 16px; margin-bottom:18px;">
+          <div
+            style="font-family:var(--font-head);font-size:0.95rem;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 11l19-9-9 19-2-8-8-2z" />
+            </svg>
+            Mess / Tiffin Details
+          </div>
+
+          <div class="field-group" id="fg-messphone">
+            <label>Mess Owner Contact Number <span class="req">*</span></label>
+            <input type="tel" id="messPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric" />
+            <div class="error-msg" id="messphone-err">Please enter a valid 10-digit number</div>
+          </div>
+
+          <div class="field-group">
+            <label>Mess Address</label>
+            <input type="text" id="messAddress" placeholder="e.g. 12, Gandhi Nagar, Jodhpur" />
+          </div>
+
+          <div class="field-group">
+            <label>Nearby Landmark</label>
+            <input type="text" id="messLandmark" placeholder="e.g. Near bus stand" />
+          </div>
+
+          <div class="field-group">
+            <label>Daily Meals Provided</label>
+            <div class="checkbox-grid" style="grid-template-columns:1fr 1fr 1fr;">
+              <label class="check-item">
+                <input type="checkbox" name="meal" value="Breakfast" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div>
+                <span class="check-label">Breakfast</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="meal" value="Lunch" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div>
+                <span class="check-label">Lunch</span>
+              </label>
+              <label class="check-item">
+                <input type="checkbox" name="meal" value="Dinner" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div>
+                <span class="check-label">Dinner</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field-group">
+              <label>Monthly Charges (₹)</label>
+              <input type="number" id="messMonthly" placeholder="e.g. 2500" min="0" />
+            </div>
+            <div class="field-group">
+              <label>Single Diet Charges (₹) <span
+                  style="color:var(--ink-soft);font-weight:400;font-size:0.75rem">(optional)</span></label>
+              <input type="number" id="messSingle" placeholder="e.g. 100" min="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="field-group">
+            <label>Gate Opens By <span style="color:var(--ink-soft);font-weight:400">(optional)</span></label>
+            <select id="gateOpen">
+              <option value="">Select time</option>
+              <option value="6 AM">6 AM</option>
+              <option value="7 AM">7 AM</option>
+              <option value="8 AM">8 AM</option>
+              <option value="9 AM">9 AM</option>
+              <option value="10 AM">10 AM</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Gate Closes By <span style="color:var(--ink-soft);font-weight:400">(optional)</span></label>
+            <select id="gateClose">
+              <option value="">Select time</option>
+              <option value="8 PM">8 PM</option>
+              <option value="9 PM">9 PM</option>
+              <option value="10 PM">10 PM</option>
+              <option value="11 PM">11 PM</option>
+              <option value="12 AM">12 AM</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(3)">← Back</button>
+          <button class="btn-next" onclick="nextStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- ══ STEP 5: Experience + Contact ══ -->
+      <div class="form-step" id="step4">
+        <div class="step-section-title">Experience &amp; Contact</div>
+
+        <div class="field-group">
+          <label>Biggest Problems Faced</label>
+          <div class="checkbox-grid">
+            <label class="check-item"><input type="checkbox" name="issue" value="Water" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Water</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Electricity" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Electricity</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Food" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Food</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Noise" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Noise</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Owner" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Owner</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Cleanliness" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Cleanliness</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Would You Recommend This PG/Room?</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="recommend" value="Yes" /> Yes</label>
+            <label class="radio-pill"><input type="radio" name="recommend" value="No" /> No</label>
+          </div>
+        </div>
+
+        <div class="field-group" id="fg-phone">
+          <label>Your Phone Number <span class="req">*</span></label>
+          <input type="tel" id="phone" placeholder="10-digit mobile number" maxlength="10" inputmode="numeric" />
+          <div class="error-msg" id="phone-err">Please enter a valid 10-digit number</div>
+        </div>
+
+        <div class="field-group" id="fg-landlord">
+          <label>Landlord / Owner Phone Number <span class="req">*</span></label>
+          <input type="tel" id="landlordPhone" placeholder="Owner's 10-digit number" maxlength="10"
+            inputmode="numeric" />
+          <div class="error-msg" id="landlord-err">Please enter a valid 10-digit landlord number</div>
+        </div>
+
+        <div class="step-nav">
+          <button class="btn-back" onclick="prevStep(4)">← Back</button>
+        </div>
+        <button class="btn-submit" onclick="submitForm()">Submit Listing</button>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success-screen" id="successScreen">
+        <div class="success-icon">✓</div>
+        <div class="success-title">You're all set!</div>
+        <p class="success-sub">Thanks! We'll connect you with the best PG/Room options shortly.<br>Our team will
+          call/WhatsApp you within 24 hours.</p>
+        <a href="https://wa.me/919057537178?text=Hi%2C%20I%20just%20listed%20my%20PG%20on%20NestEzyy!" class="wa-btn"
+          target="_blank">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+          </svg>
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div><!-- /form-card -->
+  </section>
+
+  <footer>
+    <strong>NestEzyy</strong> · Built for students &amp; working professionals<br>
+    <span style="margin-top:4px;display:block">© 2025 NestEzyy · All rights reserved</span>
+  </footer>
+
+  <a href="https://wa.me/919057537178?text=Hi%2C%20I%27m%20looking%20for%20a%20PG%2FRoom!" class="wa-float"
+    target="_blank" title="Chat on WhatsApp">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+    </svg>
+  </a>
+
+
+  <!-- Data Correction Notification -->
+  <div id="dataToast" class="data-toast">
+    <div class="data-toast-icon">✨</div>
+    <div class="data-toast-content">
+      <div class="data-toast-title">Help Us Get It Right!</div>
+      <div class="data-toast-text">Ensure all property details are 100% correct for faster verification and better
+        leads.</div>
+    </div>
+    <button class="data-toast-close" onclick="closeDataToast()">×</button>
+  </div>
+
+  <script>
+
+    // ── Data Correction Toast ──
+    setTimeout(() => {
+      document.getElementById('dataToast').classList.add('visible');
+    }, 7500); // Trigger after 7.5 seconds
+
+    function closeDataToast() {
+      document.getElementById('dataToast').classList.remove('visible');
+    }
+
+    // ── State ──
+    let currentStep = 0;
+    const totalSteps = 5;
+    const stepLabels = [
+      'Step 1 of 5 · Basic Details',
+      'Step 2 of 5 · Room Details',
+      'Step 3 of 5 · Facilities',
+      'Step 4 of 5 · Food & Timings',
+      'Step 5 of 5 · Experience'
+    ];
+
+    // Accumulate files from both upload inputs
+    let allFiles = [];
+
+    // ── Progress ──
+    function updateProgress(step) {
+      for (let i = 0; i < totalSteps; i++) {
+        const seg = document.getElementById('seg' + i);
+        seg.className = 'progress-seg' + (i < step ? ' done' : i === step ? ' active' : '');
+      }
+      document.getElementById('stepLabel').textContent = stepLabels[Math.min(step, totalSteps - 1)];
+    }
+
+    // ── Navigation ──
+    function nextStep(from) {
+      if (!validateStep(from)) return;
+      document.getElementById('step' + from).classList.remove('visible');
+      currentStep = from + 1;
+      document.getElementById('step' + currentStep).classList.add('visible');
+      updateProgress(currentStep);
+      document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function prevStep(from) {
+      document.getElementById('step' + from).classList.remove('visible');
+      currentStep = from - 1;
+      document.getElementById('step' + currentStep).classList.add('visible');
+      updateProgress(currentStep);
+      document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ── Validation ──
+    function validateStep(step) {
+      let valid = true;
+      if (step === 0) {
+        const pgname = document.getElementById('pgname').value.trim();
+        const loc = document.getElementById('location').value.trim();
+        const rent = document.getElementById('rent').value.trim();
+        const pgtype = document.querySelector('input[name="pgtype"]:checked');
+
+        document.getElementById('fg-pgname').classList.toggle('has-error', !pgname);
+        document.getElementById('fg-location').classList.toggle('has-error', !loc);
+        document.getElementById('fg-rent').classList.toggle('has-error', !rent);
+        document.getElementById('fg-pgtype').classList.toggle('has-error', !pgtype);
+
+        if (!pgname || !loc || !rent || !pgtype) valid = false;
+      }
+      if (step === 1) {
+        const rt = document.getElementById('roomtype').value;
+        const floor = document.getElementById('floor').value;
+        const photoValid = allFiles.length > 0;
+
+        document.getElementById('fg-roomtype').classList.toggle('has-error', !rt);
+        document.getElementById('fg-floor').classList.toggle('has-error', !floor);
+        document.getElementById('fg-photos').classList.toggle('has-error', !photoValid);
+
+        if (!rt || !floor || !photoValid) valid = false;
+      }
+      if (step === 2) {
+        // Bathroom validation
+        const bathtype = document.querySelector('input[name="bathtype"]:checked');
+        const bathloc = document.querySelector('input[name="bathloc"]:checked');
+
+        document.getElementById('fg-bathtype').classList.toggle('has-error', !bathtype);
+        document.getElementById('fg-bathloc').classList.toggle('has-error', !bathloc);
+
+        if (!bathtype || !bathloc) valid = false;
+
+        // Validate facilities if selected
+        const facilities = ['bed', 'table', 'chairs', 'windows', 'almirah'];
+        facilities.forEach(f => {
+          const card = document.getElementById('fac-' + f);
+          if (card.classList.contains('selected')) {
+            const input = document.getElementById(f + '-count');
+            const fg = document.getElementById('fg-' + f + '-count');
+            const val = input.value.trim();
+            fg.classList.toggle('has-error', !val);
+            if (!val) valid = false;
+          }
+        });
+
+        // Electrical validation
+        const elecCard = document.getElementById('fac-electrical');
+        if (elecCard.classList.contains('selected')) {
+          ['sockets', 'bulbs', 'tubelights', 'fan-count'].forEach(id => {
+            const input = document.getElementById(id);
+            const fg = document.getElementById('fg-' + id);
+            const val = input.value.trim();
+            fg.classList.toggle('has-error', !val);
+            if (!val) valid = false;
+          });
+        }
+      }
+      return valid;
+    }
+
+    // ── Multi-photo upload (merges files from gallery + camera) ──
+    function handleFiles(input) {
+      const newFiles = Array.from(input.files);
+      // Merge avoiding exact same filename+size duplicates
+      newFiles.forEach(nf => {
+        const dupe = allFiles.find(f => f.name === nf.name && f.size === nf.size);
+        if (!dupe) allFiles.push(nf);
+      });
+      renderPreviews();
+    }
+
+    function removeFile(idx) {
+      allFiles.splice(idx, 1);
+      renderPreviews();
+    }
+
+    function renderPreviews() {
+      const preview = document.getElementById('uploadPreview');
+      const count = document.getElementById('previewCount');
+      preview.innerHTML = '';
+      allFiles.forEach((file, idx) => {
+        const item = document.createElement('div');
+        item.className = 'preview-item';
+
+        const btn = document.createElement('button');
+        btn.className = 'remove-btn';
+        btn.innerHTML = '×';
+        btn.onclick = () => removeFile(idx);
+
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.className = 'preview-thumb';
+          img.src = URL.createObjectURL(file);
+          img.title = file.name;
+          item.appendChild(img);
+        } else {
+          // Video placeholder
+          const div = document.createElement('div');
+          div.className = 'preview-thumb';
+          div.style.cssText = 'background:#E8E6DE;display:flex;align-items:center;justify-content:center;font-size:1.4rem;';
+          div.textContent = '🎥';
+          item.appendChild(div);
+        }
+        item.appendChild(btn);
+        preview.appendChild(item);
+      });
+      count.textContent = allFiles.length > 0 ? allFiles.length + ' file' + (allFiles.length > 1 ? 's' : '') + ' selected' : '';
+      if (allFiles.length > 0) {
+        document.getElementById('fg-photos').classList.remove('has-error');
+      }
+    }
+
+    // ── Food Logic Toggle ──
+    function toggleFoodSub(val) {
+      const foodSub = document.getElementById('foodSub');
+      const messSection = document.getElementById('messSection');
+      if (val === 'yes') {
+        foodSub.classList.add('visible');
+        messSection.style.display = 'none';
+        // Clear mess validations if hidden
+        document.getElementById('fg-messphone').classList.remove('has-error');
+        document.getElementById('messphone-err').style.display = 'none';
+      } else {
+        foodSub.classList.remove('visible');
+        messSection.style.display = 'block';
+      }
+    }
+
+    // ── Facility card toggle ──
+    function toggleFac(id) {
+      document.getElementById('fac-' + id).classList.toggle('selected');
+    }
+
+    // ── Submit ──
+    function submitForm() {
+      if (!confirm("Are you sure you are submitting the correct data? Please double-check all fields.")) return;
+
+      const phone = document.getElementById('phone').value.trim();
+      const fg = document.getElementById('fg-phone');
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        fg.classList.add('has-error');
+        document.getElementById('phone-err').style.display = 'block';
+        return;
+      }
+      fg.classList.remove('has-error');
+      document.getElementById('phone-err').style.display = 'none';
+
+      // Landlord phone — mandatory
+      const landlordPhone = document.getElementById('landlordPhone').value.trim();
+      const fgL = document.getElementById('fg-landlord');
+      if (!/^[6-9]\d{9}$/.test(landlordPhone)) {
+        fgL.classList.add('has-error');
+        document.getElementById('landlord-err').style.display = 'block';
+        return;
+      }
+      fgL.classList.remove('has-error');
+      document.getElementById('landlord-err').style.display = 'none';
+
+      // Mess phone — mandatory only if food = No
+      const foodVal = document.querySelector('input[name="food"]:checked')?.value || '';
+      if (foodVal === 'No') {
+        const messPhone = document.getElementById('messPhone').value.trim();
+        const fgM = document.getElementById('fg-messphone');
+        if (!/^[6-9]\d{9}$/.test(messPhone)) {
+          fgM.classList.add('has-error');
+          document.getElementById('messphone-err').style.display = 'block';
+          document.getElementById('messSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        fgM.classList.remove('has-error');
+        document.getElementById('messphone-err').style.display = 'none';
+      }
+
+      const data = {
+        pgName: document.getElementById('pgname').value,
+        pgType: document.querySelector('input[name="pgtype"]:checked')?.value || '',
+        location: document.getElementById('location').value,
+        rent: document.getElementById('rent').value,
+        rentIncludes: [...document.querySelectorAll('input[name="rentIncludes"]:checked')].map(i => i.value),
+        deposit: document.getElementById('deposit').value,
+        roomType: document.getElementById('roomtype').value,
+        floor: document.getElementById('floor').value,
+        roomNo: document.getElementById('roomno').value,
+        totalPhotos: allFiles.length,
+        primaryFacilities: ['bed', 'table', 'chairs', 'windows', 'almirah', 'electrical', 'rowater'].filter(f => document.getElementById('fac-' + f).classList.contains('selected')),
+        bedCount: document.getElementById('bed-count').value,
+        mattress: document.getElementById('mattress').checked,
+        tableCount: document.getElementById('table-count').value,
+        chairCount: document.getElementById('chair-count').value,
+        windowCount: document.getElementById('window-count').value,
+        almirahCount: document.getElementById('almirah-count').value,
+        sockets: document.getElementById('sockets').value,
+        bulbs: document.getElementById('bulbs').value,
+        tubeLights: document.getElementById('tubelights').value,
+        fans: document.getElementById('fan-count').value,
+        bathroomType: document.querySelector('input[name="bathtype"]:checked')?.value || '',
+        bathroomLoc: document.querySelector('input[name="bathloc"]:checked')?.value || '',
+        amenities: [...document.querySelectorAll('input[name="facility"]:checked')].map(i => i.value),
+        rules: [...document.querySelectorAll('input[name="rule"]:checked')].map(i => i.value),
+        foodAvailable: foodVal,
+        foodFrequency: document.querySelector('input[name="foodfreq"]:checked')?.value || '',
+        messPhone: document.getElementById('messPhone').value,
+        messAddress: document.getElementById('messAddress').value,
+        messLandmark: document.getElementById('messLandmark').value,
+        messMeals: [...document.querySelectorAll('input[name="meal"]:checked')].map(i => i.value),
+        messMonthlyCharges: document.getElementById('messMonthly').value,
+        messSingleDietCharges: document.getElementById('messSingle').value,
+        gateOpen: document.getElementById('gateOpen').value,
+        gateClose: document.getElementById('gateClose').value,
+        issues: [...document.querySelectorAll('input[name="issue"]:checked')].map(i => i.value),
+        recommend: document.querySelector('input[name="recommend"]:checked')?.value || '',
+        phone: phone,
+        landlordPhone: landlordPhone,
+        submittedAt: new Date().toISOString()
+      };
+
+      sendToSupabase(data);
+      document.getElementById('step4').classList.remove('visible');
+      document.getElementById('successScreen').classList.add('visible');
+      updateProgress(5);
+      document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+
+    // ── Supabase config ──
+    const SUPABASE_URL = 'https://zycrupwwjbaciklgrvjw.supabase.co'; // TODO: Replace with your Supabase project URL
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5Y3J1cHd3amJhY2lrbGdydmp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMDM0ODQsImV4cCI6MjA5MTU3OTQ4NH0.GPyfOGjH_Ldy5wqnTx5LDOy3hVwauPixZXm4BbkzhBo'; // TODO: Replace with your Supabase anon key
+    const supabase = window.supabase?.createClient
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    async function sendToSupabase(data) {
+      if (!supabase) {
+        alert('Supabase client not loaded. Please include the Supabase JS library.');
+        return;
+      }
+
+      // 1. Upload all photos/videos first
+      const photoUrls = [];
+      for (const file of allFiles) {
+        const ext = file.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const filePath = `listings/${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('pg-photos')
+          .upload(filePath, file);
+
+        if (!uploadError) {
+          const { data: urlData } = supabase.storage
+            .from('pg-photos')
+            .getPublicUrl(filePath);
+          photoUrls.push(urlData.publicUrl);
+        } else {
+          console.error('Upload error:', uploadError);
+        }
+      }
+
+      // 2. Save listing with photo URLs
+      const { error } = await supabase.from('pg_listings').insert([
+        {
+          pg_name: data.pgName,
+          pg_type: data.pgType,
+          location: data.location,
+          rent: data.rent ? Number(data.rent) : null,
+          rent_includes: data.rentIncludes,
+          deposit: data.deposit ? Number(data.deposit) : null,
+          room_type: data.roomType,
+          floor: data.floor,
+          room_no: data.roomNo,
+          total_photos: photoUrls.length,
+          photo_urls: photoUrls, // new column for URLs
+          primary_facilities: data.primaryFacilities,
+          bed_count: data.bedCount ? Number(data.bedCount) : null,
+          mattress: data.mattress,
+          table_count: data.tableCount ? Number(data.tableCount) : null,
+          chair_count: data.chairCount ? Number(data.chairCount) : null,
+          window_count: data.windowCount ? Number(data.windowCount) : null,
+          almirah_count: data.almirahCount ? Number(data.almirahCount) : null,
+          sockets: data.sockets ? Number(data.sockets) : null,
+          bulbs: data.bulbs ? Number(data.bulbs) : null,
+          tube_lights: data.tubeLights ? Number(data.tubeLights) : null,
+          fans: data.fans ? Number(data.fans) : null,
+          bathroom_type: data.bathroomType,
+          bathroom_loc: data.bathroomLoc,
+          amenities: data.amenities,
+          rules: data.rules,
+          food_available: data.foodAvailable,
+          food_frequency: data.foodFrequency,
+          mess_phone: data.messPhone,
+          mess_address: data.messAddress,
+          mess_landmark: data.messLandmark,
+          mess_meals: data.messMeals,
+          mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
+          mess_single_diet_charges: data.messSingleDietCharges ? Number(data.messSingleDietCharges) : null,
+          gate_open: data.gateOpen,
+          gate_close: data.gateClose,
+          issues: data.issues,
+          recommend: data.recommend,
+          phone: data.phone,
+          landlord_phone: data.landlordPhone,
+        },
+      ]);
+      if (error) {
+        console.error('Supabase insert error:', error);
+      } else {
+        console.log('Listing + photos saved!');
+      }
+    }
+    // ── Load Supabase JS if not present ──
+    if (!window.supabase) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js';
+      script.onload = () => {
+        console.log('Supabase JS loaded');
+      };
+      document.head.appendChild(script);
+    }
+
+    // Clear error on input
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', () => el.closest('.field-group')?.classList.remove('has-error'));
+    });
+
+    // Restrict phone fields to digits only (10 digits max)
+    document.querySelectorAll('input[type="tel"]').forEach(input => {
+      input.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 10) this.value = this.value.slice(0, 10);
+      });
+    });
+    // ── Custom Camera Logic ──
+    let cameraStream = null;
+
+    async function openCamera() {
+      const modal = document.getElementById('cameraModal');
+      const video = document.getElementById('cameraVideo');
+
+      try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: 'environment' },
+          audio: false
+        });
+        video.srcObject = cameraStream;
+        modal.classList.add('visible');
+        document.body.style.overflow = 'hidden'; // Prevent scroll
+      } catch (err) {
+        console.error("Camera error:", err);
+        alert("Could not access camera. Please ensure permissions are granted.");
+      }
+    }
+
+    function closeCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+      }
+      document.getElementById('cameraModal').classList.remove('visible');
+      document.body.style.overflow = '';
+    }
+
+    function capturePhoto() {
+      const video = document.getElementById('cameraVideo');
+      const canvas = document.getElementById('cameraCanvas');
+      const flash = document.getElementById('shutterFlash');
+
+      // Shutter effect
+      flash.classList.remove('flash-active');
+      void flash.offsetWidth; // Trigger reflow
+      flash.classList.add('flash-active');
+
+      // Capture frame
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert to file
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const fileName = `capture_${Date.now()}.jpg`;
+          const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+          // Add to state
+          allFiles.push(file);
+          renderPreviews();
+
+          // Close camera after capture
+          closeCamera();
+        }
+      }, 'image/jpeg', 0.9);
+    }
+  </script>
+
+  <!-- Camera Modal -->
+  <div id="cameraModal" class="camera-modal">
+    <div class="camera-container">
+      <button class="btn-close-camera" onclick="closeCamera()">×</button>
+      <div class="video-wrap">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <div id="shutterFlash" class="shutter-flash"></div>
+      </div>
+      <div class="camera-controls">
+        <button class="btn-capture" onclick="capturePhoto()" title="Take Photo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="cameraCanvas" style="display:none"></canvas>
+</body>
+
+</html>
