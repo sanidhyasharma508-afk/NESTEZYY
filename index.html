@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NestEzyy — Find Verified PG/Room Near You</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap"
     rel="stylesheet" />
@@ -2187,12 +2188,12 @@
     // ── Supabase config ──
     const SUPABASE_URL = 'https://zycrupwwjbaciklgrvjw.supabase.co'; // TODO: Replace with your Supabase project URL
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5Y3J1cHd3amJhY2lrbGdydmp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMDM0ODQsImV4cCI6MjA5MTU3OTQ4NH0.GPyfOGjH_Ldy5wqnTx5LDOy3hVwauPixZXm4BbkzhBo'; // TODO: Replace with your Supabase anon key
-    const supabase = window.supabase?.createClient
+    const supabaseClient = window.supabase?.createClient
       ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
       : null;
 
     async function sendToSupabase(data) {
-      if (!supabase) {
+      if (!supabaseClient) {
         alert('Supabase client not loaded. Please include the Supabase JS library.');
         return;
       }
@@ -2204,12 +2205,12 @@
         const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
         const filePath = `listings/${fileName}`;
 
-        const { error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabaseClient.storage
           .from('pg-photos')
           .upload(filePath, file);
 
         if (!uploadError) {
-          const { data: urlData } = supabase.storage
+          const { data: urlData } = supabaseClient.storage
             .from('pg-photos')
             .getPublicUrl(filePath);
           photoUrls.push(urlData.publicUrl);
@@ -2219,7 +2220,7 @@
       }
 
       // 2. Save listing with photo URLs
-      const { error } = await supabase.from('pg_listings').insert([
+      const { error } = await supabaseClient.from('pg_listings').insert([
         {
           pg_name: data.pgName,
           pg_type: data.pgType,
@@ -2268,15 +2269,6 @@
       } else {
         console.log('Listing + photos saved!');
       }
-    }
-    // ── Load Supabase JS if not present ──
-    if (!window.supabase) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js';
-      script.onload = () => {
-        console.log('Supabase JS loaded');
-      };
-      document.head.appendChild(script);
     }
 
     // Clear error on input
