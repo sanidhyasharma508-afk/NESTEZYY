@@ -1994,12 +1994,18 @@
         if (!bathtype || !bathloc) valid = false;
 
         // Validate facilities if selected
-        const facilities = ['bed', 'table', 'chairs', 'windows', 'almirah'];
+        const facilities = [
+          { card: 'fac-bed', input: 'bed-count', fg: 'fg-bed-count' },
+          { card: 'fac-table', input: 'table-count', fg: 'fg-table-count' },
+          { card: 'fac-chairs', input: 'chair-count', fg: 'fg-chair-count' },
+          { card: 'fac-windows', input: 'window-count', fg: 'fg-window-count' },
+          { card: 'fac-almirah', input: 'almirah-count', fg: 'fg-almirah-count' }
+        ];
         facilities.forEach(f => {
-          const card = document.getElementById('fac-' + f);
-          if (card.classList.contains('selected')) {
-            const input = document.getElementById(f + '-count');
-            const fg = document.getElementById('fg-' + f + '-count');
+          const card = document.getElementById(f.card);
+          if (card && card.classList.contains('selected')) {
+            const input = document.getElementById(f.input);
+            const fg = document.getElementById(f.fg);
             const val = input.value.trim();
             fg.classList.toggle('has-error', !val);
             if (!val) valid = false;
