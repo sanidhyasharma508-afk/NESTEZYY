@@ -64,16 +64,10 @@
       justify-content: space-between;
     }
 
-    .logo {
-      font-family: var(--font-head);
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--ink);
-      letter-spacing: -0.5px;
-    }
-
-    .logo span {
-      color: var(--accent);
+    .logo img {
+      height: 52px;
+      display: block;
+      width: auto;
     }
 
     .nav-cta {
@@ -1241,7 +1235,9 @@
 
   <!-- NAV -->
   <nav>
-    <div class="logo">Nest<span>Ezyy</span></div>
+    <div class="logo">
+      <img src="LOGO.png" alt="NestEzyy Logo">
+    </div>
     <a href="#list-pg" class="nav-cta">List Your PG/Room</a>
   </nav>
 
@@ -1746,18 +1742,20 @@
             <div class="error-msg" id="messphone-err">Please enter a valid 10-digit number</div>
           </div>
 
-          <div class="field-group">
-            <label>Mess Address</label>
+          <div class="field-group" id="fg-messaddress">
+            <label>Mess Address <span class="req">*</span></label>
             <input type="text" id="messAddress" placeholder="e.g. 12, Gandhi Nagar, Jodhpur" />
+            <div class="error-msg">Please enter the mess address</div>
           </div>
 
-          <div class="field-group">
-            <label>Nearby Landmark</label>
+          <div class="field-group" id="fg-messlandmark">
+            <label>Nearby Landmark <span class="req">*</span></label>
             <input type="text" id="messLandmark" placeholder="e.g. Near bus stand" />
+            <div class="error-msg">Please enter a nearby landmark</div>
           </div>
 
-          <div class="field-group">
-            <label>Daily Meals Provided</label>
+          <div class="field-group" id="fg-meals">
+            <label>Daily Meals Provided <span class="req">*</span></label>
             <div class="checkbox-grid" style="grid-template-columns:1fr 1fr 1fr;">
               <label class="check-item">
                 <input type="checkbox" name="meal" value="Breakfast" />
@@ -1784,12 +1782,14 @@
                 <span class="check-label">Dinner</span>
               </label>
             </div>
+            <div class="error-msg" id="meals-err">Please select at least one meal</div>
           </div>
 
           <div class="two-col">
-            <div class="field-group">
-              <label>Monthly Charges (₹)</label>
-              <input type="number" id="messMonthly" placeholder="e.g. 2500" min="0" />
+            <div class="field-group" id="fg-messmonthly">
+              <label>Monthly Charges (₹) <span class="req">*</span></label>
+              <input type="number" id="messMonthly" placeholder="e.g. 2500" min="500" />
+              <div class="error-msg">Please enter monthly charges</div>
             </div>
             <div class="field-group">
               <label>Single Diet Charge</label>
@@ -1921,7 +1921,7 @@
   </section>
 
   <footer>
-    <strong>NestEzyy</strong> · Built for students &amp; working professionals<br>
+    <img src="LOGO.png" alt="NestEzyy" style="height: 28px; display: inline-block; vertical-align: middle; margin-bottom: 2px; margin-right: 4px;"> · Built for students &amp; working professionals<br>
     <span style="margin-top:4px;display:block">© 2025 NestEzyy · All rights reserved</span>
   </footer>
 
@@ -1995,7 +1995,14 @@
 
     // ── Navigation ──
     function nextStep(from) {
-      if (!validateStep(from)) return;
+      if (!validateStep(from)) {
+        const stepEl = document.getElementById('step' + from);
+        const firstErr = stepEl.querySelector('.has-error');
+        if (firstErr) {
+          firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
       document.getElementById('step' + from).classList.remove('visible');
       currentStep = from + 1;
       document.getElementById('step' + currentStep).classList.add('visible');
@@ -2123,6 +2130,26 @@
             fg.classList.toggle('has-error', !val);
             if (!val) valid = false;
           });
+        }
+      }
+      if (step === 3) {
+        const food = document.querySelector('input[name="food"]:checked');
+        if (!food) {
+          valid = false;
+        } else if (food.value === 'No') {
+          const mp = document.getElementById('messPhone').value.trim();
+          const ma = document.getElementById('messAddress').value.trim();
+          const ml = document.getElementById('messLandmark').value.trim();
+          const mm = document.getElementById('messMonthly').value.trim();
+          const meals = document.querySelectorAll('input[name="meal"]:checked');
+
+          document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
+          document.getElementById('fg-messaddress').classList.toggle('has-error', !ma);
+          document.getElementById('fg-messlandmark').classList.toggle('has-error', !ml);
+          document.getElementById('fg-meals').classList.toggle('has-error', meals.length === 0);
+          document.getElementById('fg-messmonthly').classList.toggle('has-error', !mm);
+
+          if (mp.length !== 10 || !ma || !ml || meals.length === 0 || !mm) valid = false;
         }
       }
       return valid;
@@ -2400,11 +2427,20 @@
       el.addEventListener('input', () => el.closest('.field-group')?.classList.remove('has-error'));
     });
 
-    // Restrict phone fields to digits only (10 digits max)
+    // Restrict phone fields to digits only (10 digits max) + real-time error
     document.querySelectorAll('input[type="tel"]').forEach(input => {
       input.addEventListener('input', function () {
         this.value = this.value.replace(/[^0-9]/g, '');
         if (this.value.length > 10) this.value = this.value.slice(0, 10);
+
+        const fg = this.closest('.field-group');
+        if (fg) {
+          if (this.value.length > 0 && this.value.length < 10) {
+            fg.classList.add('has-error');
+          } else if (this.value.length === 10) {
+            fg.classList.remove('has-error');
+          }
+        }
       });
     });
     // ── Custom Camera Logic ──
