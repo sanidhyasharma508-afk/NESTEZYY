@@ -1396,6 +1396,43 @@
           </div>
         </div>
 
+        <div class="field-group" id="fg-vacate">
+          <label>Are you going to vacate this room? <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="vacate" value="Yes" onchange="toggleVacateSub('yes')" />
+              Yes</label>
+            <label class="radio-pill"><input type="radio" name="vacate" value="No" onchange="toggleVacateSub('no')" />
+              No</label>
+          </div>
+          <div class="error-msg">Please select an option</div>
+
+          <div class="sub-field" id="vacateSub"
+            style="background: rgba(255, 107, 53, 0.05); border: 1px dashed var(--accent);">
+            <label>Tentative Date (Month/Year) <span class="req">*</span></label>
+            <div class="two-col" style="margin-top:8px;">
+              <select id="vacateMonth">
+                <option value="">Month</option>
+                <option value="Jan">Jan</option>
+                <option value="Feb">Feb</option>
+                <option value="Mar">Mar</option>
+                <option value="Apr">Apr</option>
+                <option value="May">May</option>
+                <option value="Jun">Jun</option>
+                <option value="Jul">Jul</option>
+                <option value="Aug">Aug</option>
+                <option value="Sep">Sep</option>
+                <option value="Oct">Oct</option>
+                <option value="Nov">Nov</option>
+                <option value="Dec">Dec</option>
+              </select>
+              <select id="vacateYear">
+                <option value="">Year</option>
+              </select>
+            </div>
+            <div class="error-msg" id="vacatedate-err">Please select both month and year</div>
+          </div>
+        </div>
+
         <!-- ── MULTI-PHOTO UPLOAD ── -->
         <div class="field-group" id="fg-photos">
           <label>Upload Photos/Videos of your room <span class="req">*</span></label>
@@ -1906,6 +1943,21 @@
 
   <script>
 
+    // ── Pre-populate Years ──
+    function populateYears() {
+      const yearSelect = document.getElementById('vacateYear');
+      if (!yearSelect) return;
+      const currentYear = new Date().getFullYear();
+      for (let i = 0; i < 5; i++) {
+        const year = currentYear + i;
+        const opt = document.createElement('option');
+        opt.value = year;
+        opt.textContent = year;
+        yearSelect.appendChild(opt);
+      }
+    }
+    populateYears();
+
     // ── Data Correction Toast ──
     setTimeout(() => {
       document.getElementById('dataToast').classList.add('visible');
@@ -1975,13 +2027,28 @@
       if (step === 1) {
         const rt = document.getElementById('roomtype').value;
         const floor = document.getElementById('floor').value;
+        const vacate = document.querySelector('input[name="vacate"]:checked');
         const photoValid = allFiles.length > 0;
 
         document.getElementById('fg-roomtype').classList.toggle('has-error', !rt);
         document.getElementById('fg-floor').classList.toggle('has-error', !floor);
+        document.getElementById('fg-vacate').classList.toggle('has-error', !vacate);
         document.getElementById('fg-photos').classList.toggle('has-error', !photoValid);
 
-        if (!rt || !floor || !photoValid) valid = false;
+        let vacateDateValid = true;
+        if (vacate && vacate.value === 'Yes') {
+          const vm = document.getElementById('vacateMonth').value;
+          const vy = document.getElementById('vacateYear').value;
+          const vde = document.getElementById('vacatedate-err');
+          if (!vm || !vy) {
+            vde.style.display = 'block';
+            vacateDateValid = false;
+          } else {
+            vde.style.display = 'none';
+          }
+        }
+
+        if (!rt || !floor || !vacate || !vacateDateValid || !photoValid) valid = false;
       }
       if (step === 2) {
         // Bathroom validation
@@ -2079,6 +2146,17 @@
       }
     }
 
+    // ── Vacate Logic Toggle ──
+    function toggleVacateSub(val) {
+      const vacateSub = document.getElementById('vacateSub');
+      if (val === 'yes') {
+        vacateSub.classList.add('visible');
+      } else {
+        vacateSub.classList.remove('visible');
+        document.getElementById('vacatedate-err').style.display = 'none';
+      }
+    }
+
     // ── Food Logic Toggle ──
     function toggleFoodSub(val) {
       const foodSub = document.getElementById('foodSub');
@@ -2150,6 +2228,8 @@
         roomType: document.getElementById('roomtype').value,
         floor: document.getElementById('floor').value,
         roomNo: document.getElementById('roomno').value,
+        vacating: document.querySelector('input[name="vacate"]:checked')?.value || '',
+        vacateDate: document.getElementById('vacateMonth').value + ' ' + document.getElementById('vacateYear').value,
         totalPhotos: allFiles.length,
         primaryFacilities: ['bed', 'table', 'chairs', 'windows', 'almirah', 'electrical', 'rowater'].filter(f => document.getElementById('fac-' + f).classList.contains('selected')),
         bedCount: document.getElementById('bed-count').value,
@@ -2237,6 +2317,8 @@
           room_type: data.roomType,
           floor: data.floor,
           room_no: data.roomNo,
+          vacating: data.vacating,
+          vacate_date: data.vacateDate,
           total_photos: photoUrls.length,
           photo_urls: photoUrls, // new column for URLs
           primary_facilities: data.primaryFacilities,
