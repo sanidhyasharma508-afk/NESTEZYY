@@ -1353,13 +1353,11 @@
           <label>Stay Type <span class="req">*</span></label>
           <div class="radio-group">
             <label class="radio-pill"><input type="radio" name="staytype" value="Room"
-                onchange="toggleRentLabels(this.value)" /> Room</label>
+                onchange="updateRentLabels()" /> Room</label>
             <label class="radio-pill"><input type="radio" name="staytype" value="PG"
-                onchange="toggleRentLabels(this.value)" /> PG</label>
+                onchange="updateRentLabels()" /> PG</label>
             <label class="radio-pill"><input type="radio" name="staytype" value="Flat"
-                onchange="toggleRentLabels(this.value)" /> Flat</label>
-            <label class="radio-pill"><input type="radio" name="staytype" value="Family"
-                onchange="toggleRentLabels(this.value)" /> Family</label>
+                onchange="updateRentLabels()" /> Flat</label>
           </div>
           <div class="error-msg">Please select a stay type</div>
         </div>
@@ -1368,9 +1366,10 @@
         <div class="field-group" id="fg-pgtype">
           <label>For <span class="req">*</span></label>
           <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Boys" /> Boys</label>
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Girls" /> Girls</label>
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Co-ed" /> Co-ed</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Boys" onchange="updateRentLabels()" /> Boys</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Girls" onchange="updateRentLabels()" /> Girls</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Co-ed" onchange="updateRentLabels()" /> Co-ed</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Family" onchange="updateRentLabels()" /> Family</label>
           </div>
           <div class="error-msg">Please select who this is for</div>
         </div>
@@ -1825,8 +1824,10 @@
             <div class="field-group" id="fg-foodfreq">
               <label>Meal Frequency <span class="req">*</span></label>
               <div class="radio-group" style="margin-top:8px;">
-                <label class="radio-pill"><input type="radio" name="foodfreq" value="2 times a day" /> 2 times/day</label>
-                <label class="radio-pill"><input type="radio" name="foodfreq" value="3 times a day" /> 3 times/day</label>
+                <label class="radio-pill"><input type="radio" name="foodfreq" value="2 times a day" /> 2
+                  times/day</label>
+                <label class="radio-pill"><input type="radio" name="foodfreq" value="3 times a day" /> 3
+                  times/day</label>
               </div>
               <div class="error-msg">Please select meal frequency</div>
             </div>
@@ -1848,8 +1849,10 @@
           <div class="field-group" style="margin-bottom:18px;">
             <label>Service Type <span class="req">*</span></label>
             <div class="radio-group" style="margin-top:8px;">
-              <label class="radio-pill"><input type="radio" name="serviceType" value="Mess" onchange="toggleServiceLabels('Mess')" checked /> Mess</label>
-              <label class="radio-pill"><input type="radio" name="serviceType" value="Tiffin" onchange="toggleServiceLabels('Tiffin')" /> Tiffin</label>
+              <label class="radio-pill"><input type="radio" name="serviceType" value="Mess"
+                  onchange="toggleServiceLabels('Mess')" checked /> Mess</label>
+              <label class="radio-pill"><input type="radio" name="serviceType" value="Tiffin"
+                  onchange="toggleServiceLabels('Tiffin')" /> Tiffin</label>
             </div>
           </div>
 
@@ -2367,15 +2370,23 @@
     }
 
     // ── Rent Label Toggle ──
-    function toggleRentLabels(val) {
+    function updateRentLabels() {
+      const stayType = document.querySelector('input[name="staytype"]:checked')?.value;
+      const forType = document.querySelector('input[name="pgtype"]:checked')?.value;
       const mainLabel = document.getElementById('rent-main-label');
       const incLabel = document.getElementById('rent-inc-label');
-      if (val === 'Flat' || val === 'Family') {
-        if (mainLabel) mainLabel.innerHTML = 'Total ' + val + ' Rent (₹) <span class="req">*</span>';
-        if (incLabel) incLabel.textContent = 'Stay Rent (₹) includes:';
+
+      if (!mainLabel) return;
+
+      if (stayType === 'Flat' || forType === 'Family') {
+        let labelText = (forType === 'Family') ? 'Family' : 'Flat';
+        mainLabel.innerHTML = 'Total ' + labelText + ' Rent (₹) <span class="req">*</span>';
       } else {
-        if (mainLabel) mainLabel.innerHTML = 'Monthly Room/PG Rent per Person (₹) <span class="req">*</span>';
-        if (incLabel) incLabel.textContent = 'Stay Rent (₹) includes:';
+        mainLabel.innerHTML = 'Monthly Room/PG Rent per Person (₹) <span class="req">*</span>';
+      }
+      
+      if (incLabel) {
+        incLabel.textContent = 'Stay Rent (₹) includes:';
       }
     }
 
@@ -2386,7 +2397,7 @@
       const nameFG = document.getElementById('fg-messaddress');
       const nameLabel = nameFG.querySelector('label');
       const landmarkFG = document.getElementById('fg-messlandmark');
-      
+
       let errorMsg = nameFG.querySelector('.error-msg');
       if (type === 'Tiffin') {
         phoneLabel.innerHTML = 'Tiffin Owner Contact Number <span class="req">*</span>';
@@ -2607,7 +2618,7 @@
           mess_phone: data.messPhone,
           mess_name: data.messName,
           mess_address: data.messAddress,
-          mess_landmark: '', 
+          mess_landmark: '',
           mess_meals: data.messMeals,
           external_service_type: data.serviceType,
           mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
