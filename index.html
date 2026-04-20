@@ -2607,6 +2607,7 @@
           mess_phone: data.messPhone,
           mess_name: data.messName,
           mess_address: data.messAddress,
+          mess_landmark: '', 
           mess_meals: data.messMeals,
           external_service_type: data.serviceType,
           mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
@@ -2617,6 +2618,7 @@
           recommend: data.recommend,
           phone: data.phone,
           landlord_phone: data.landlordPhone,
+          submitted_at: data.submittedAt
         },
       ]);
       if (error) {
