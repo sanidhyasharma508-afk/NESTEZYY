@@ -75,6 +75,25 @@
       width: auto;
     }
 
+    .logo-text {
+      font-family: var(--font-head);
+      font-weight: 800;
+      color: var(--ink);
+      margin-left: -6px;
+    }
+    .logo-text span {
+      color: var(--accent);
+    }
+
+    @media (max-width: 420px) {
+      nav .logo { gap: 5px !important; }
+      nav .logo img { height: 38px; }
+      nav .logo-text { font-size: 1.3rem !important; letter-spacing: -0.2px !important; }
+      .nav-cta { padding: 8px 12px; font-size: 0.75rem; }
+      .radio-pill { padding: 6px 10px; font-size: 0.8rem; gap: 4px; }
+      .radio-group { gap: 4px; }
+    }
+
     .nav-cta {
       background: var(--accent);
       color: #fff;
@@ -465,7 +484,7 @@
     /* RADIO PILLS */
     .radio-group {
       display: flex;
-      gap: 10px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
@@ -475,9 +494,9 @@
       gap: 6px;
       border: 1.5px solid var(--border);
       border-radius: 100px;
-      padding: 9px 16px;
+      padding: 7px 12px;
       cursor: pointer;
-      font-size: 0.87rem;
+      font-size: 0.85rem;
       font-weight: 500;
       transition: all 0.2s;
       background: #FAFAF7;
@@ -1240,8 +1259,9 @@
 
   <!-- NAV -->
   <nav>
-    <div class="logo">
+    <div class="logo" style="display: flex; align-items: center; gap: 8px;">
       <img src="LOGO.png" alt="NestEzyy Logo">
+      <span class="logo-text" style="font-size: 1.6rem; letter-spacing: -0.5px;">Nest<span>Ezyy</span></span>
     </div>
     <a href="#list-pg" class="nav-cta">List Your PG/Room</a>
   </nav>
@@ -1313,6 +1333,7 @@
             <label class="radio-pill"><input type="radio" name="staytype" value="Room" onchange="toggleRentLabels(this.value)" /> Room</label>
             <label class="radio-pill"><input type="radio" name="staytype" value="PG" onchange="toggleRentLabels(this.value)" /> PG</label>
             <label class="radio-pill"><input type="radio" name="staytype" value="Flat" onchange="toggleRentLabels(this.value)" /> Flat</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Family" onchange="toggleRentLabels(this.value)" /> Family</label>
           </div>
           <div class="error-msg">Please select a stay type</div>
         </div>
@@ -1987,7 +2008,10 @@
   </section>
 
   <footer>
-    <img src="LOGO.png" alt="NestEzyy" style="height: 28px; display: inline-block; vertical-align: middle; margin-bottom: 2px; margin-right: 4px;"> · Built for students &amp; working professionals<br>
+    <div style="display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; margin-bottom: 2px; margin-right: 4px;">
+      <img src="LOGO.png" alt="NestEzyy" style="height: 28px;">
+      <span class="logo-text" style="font-size: 1.15rem; letter-spacing: -0.3px;">Nest<span>Ezyy</span></span>
+    </div> · Built for students &amp; working professionals<br>
     <span style="margin-top:4px;display:block">© 2025 NestEzyy · All rights reserved</span>
   </footer>
 
@@ -2278,8 +2302,8 @@
     function toggleRentLabels(val) {
       const mainLabel = document.getElementById('rent-main-label');
       const incLabel = document.getElementById('rent-inc-label');
-      if (val === 'Flat') {
-        if (mainLabel) mainLabel.innerHTML = 'Total Flat Rent (₹) <span class="req">*</span>';
+      if (val === 'Flat' || val === 'Family') {
+        if (mainLabel) mainLabel.innerHTML = 'Total ' + val + ' Rent (₹) <span class="req">*</span>';
         if (incLabel) incLabel.textContent = 'Stay Rent (₹) includes:';
       } else {
         if (mainLabel) mainLabel.innerHTML = 'Monthly Room/PG Rent per Person (₹) <span class="req">*</span>';
