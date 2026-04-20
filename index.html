@@ -1306,23 +1306,34 @@
           <div class="error-msg">Please enter a location</div>
         </div>
 
-        <!-- PG Type (Girls/Boys) added below landmark -->
+        <!-- Stay Type added below landmark -->
+        <div class="field-group" id="fg-staytype">
+          <label>Stay Type <span class="req">*</span></label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="staytype" value="Room" onchange="toggleRentLabels(this.value)" /> Room</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="PG" onchange="toggleRentLabels(this.value)" /> PG</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Flat" onchange="toggleRentLabels(this.value)" /> Flat</label>
+          </div>
+          <div class="error-msg">Please select a stay type</div>
+        </div>
+
+        <!-- For (Girls/Boys) added below landmark -->
         <div class="field-group" id="fg-pgtype">
-          <label>PG/Room Type <span class="req">*</span></label>
+          <label>For <span class="req">*</span></label>
           <div class="radio-group">
             <label class="radio-pill"><input type="radio" name="pgtype" value="Boys" /> Boys</label>
             <label class="radio-pill"><input type="radio" name="pgtype" value="Girls" /> Girls</label>
             <label class="radio-pill"><input type="radio" name="pgtype" value="Co-ed" /> Co-ed</label>
           </div>
-          <div class="error-msg">Please select a PG/Room type</div>
+          <div class="error-msg">Please select who this is for</div>
         </div>
 
         <div class="field-group" id="fg-rent">
-          <label>Monthly Room/PG Rent per Person (₹) <span class="req">*</span></label>
+          <label id="rent-main-label">Monthly Room/PG Rent per Person (₹) <span class="req">*</span></label>
           <input type="number" id="rent" placeholder="e.g. 6000" min="500" />
           <div class="error-msg">Please enter monthly rent</div>
           <div class="rent-includes">
-            <div class="rent-includes-label">Monthly Room/PG Rent (₹) includes:</div>
+            <div class="rent-includes-label" id="rent-inc-label">Stay Rent (₹) includes:</div>
             <div class="rent-includes-opts">
               <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Food" /> Food</label>
               <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Electricity" />
@@ -1374,8 +1385,7 @@
             <div class="error-msg">Please select a floor</div>
           </div>
           <div class="field-group">
-            <label>Room No. <span
-                style="color:var(--ink-soft);font-weight:400;font-size:0.78rem">(optional)</span></label>
+            <label>Room No.</label>
             <select id="roomno">
               <option value="">Select</option>
               <optgroup label="Left from entrance">
@@ -1668,6 +1678,34 @@
                 </svg></div>
               <span class="check-label">Visitors of Other Gender Allowed</span>
             </label>
+            <label class="check-item">
+              <input type="checkbox" name="rule" value="Induction Allowed" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></div>
+              <span class="check-label">Induction Allowed</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="rule" value="Kettle Allowed" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></div>
+              <span class="check-label">Kettle Allowed</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="rule" value="Iron Allowed" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></div>
+              <span class="check-label">Iron Allowed</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="rule" value="Gas Cylinder Allowed" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg></div>
+              <span class="check-label">Gas Cylinder Allowed</span>
+            </label>
           </div>
         </div>
 
@@ -1698,6 +1736,18 @@
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Inverter</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Terrace" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Terrace</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Kitchen" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Kitchen</span>
             </label>
           </div>
         </div>
@@ -1748,15 +1798,14 @@
           </div>
 
           <div class="field-group" id="fg-messaddress">
-            <label>Mess Address <span class="req">*</span></label>
-            <input type="text" id="messAddress" placeholder="e.g. 12, Gandhi Nagar, Jodhpur" />
-            <div class="error-msg">Please enter the mess address</div>
+            <label>Mess Name</label>
+            <input type="text" id="messAddress" placeholder="e.g. Shree Ram Tiffin Center" />
           </div>
 
           <div class="field-group" id="fg-messlandmark">
-            <label>Nearby Landmark <span class="req">*</span></label>
-            <input type="text" id="messLandmark" placeholder="e.g. Near bus stand" />
-            <div class="error-msg">Please enter a nearby landmark</div>
+            <label>Address (with nearby landmark) <span class="req">*</span></label>
+            <input type="text" id="messLandmark" placeholder="e.g. 12, Gandhi Nagar, Near bus stand" />
+            <div class="error-msg">Please enter the address and landmark</div>
           </div>
 
           <div class="field-group" id="fg-meals">
@@ -1805,7 +1854,7 @@
 
         <div class="two-col">
           <div class="field-group">
-            <label>Gate Opens By <span style="color:var(--ink-soft);font-weight:400">(optional)</span></label>
+            <label>Stay Gate Opens By</label>
             <select id="gateOpen">
               <option value="">Select time</option>
               <option value="6 AM">6 AM</option>
@@ -1816,7 +1865,7 @@
             </select>
           </div>
           <div class="field-group">
-            <label>Gate Closes By <span style="color:var(--ink-soft);font-weight:400">(optional)</span></label>
+            <label>Stay Gate Closes By</label>
             <select id="gateClose">
               <option value="">Select time</option>
               <option value="8 PM">8 PM</option>
@@ -1839,7 +1888,7 @@
         <div class="step-section-title">Experience &amp; Contact</div>
 
         <div class="field-group">
-          <label>Biggest Problems Faced</label>
+          <label>Problems Faced</label>
           <div class="checkbox-grid">
             <label class="check-item"><input type="checkbox" name="issue" value="Water" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
@@ -1876,6 +1925,18 @@
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Cleanliness</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Stray Dogs" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Stray Dogs</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="issue" value="Neighbours" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Neighbours</span>
             </label>
           </div>
         </div>
@@ -2031,13 +2092,15 @@
         const loc = document.getElementById('location').value.trim();
         const rent = document.getElementById('rent').value.trim();
         const pgtype = document.querySelector('input[name="pgtype"]:checked');
+        const staytype = document.querySelector('input[name="staytype"]:checked');
 
         document.getElementById('fg-pgname').classList.toggle('has-error', !pgname);
         document.getElementById('fg-location').classList.toggle('has-error', !loc);
         document.getElementById('fg-rent').classList.toggle('has-error', !rent);
         document.getElementById('fg-pgtype').classList.toggle('has-error', !pgtype);
+        document.getElementById('fg-staytype').classList.toggle('has-error', !staytype);
 
-        if (!pgname || !loc || !rent || !pgtype) valid = false;
+        if (!pgname || !loc || !rent || !pgtype || !staytype) valid = false;
       }
       if (step === 1) {
         const rt = document.getElementById('roomtype').value;
@@ -2149,12 +2212,11 @@
           const meals = document.querySelectorAll('input[name="meal"]:checked');
 
           document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
-          document.getElementById('fg-messaddress').classList.toggle('has-error', !ma);
           document.getElementById('fg-messlandmark').classList.toggle('has-error', !ml);
           document.getElementById('fg-meals').classList.toggle('has-error', meals.length === 0);
           document.getElementById('fg-messmonthly').classList.toggle('has-error', !mm);
 
-          if (mp.length !== 10 || !ma || !ml || meals.length === 0 || !mm) valid = false;
+          if (mp.length !== 10 || !ml || meals.length === 0 || !mm) valid = false;
         }
       }
       return valid;
@@ -2209,6 +2271,19 @@
       count.textContent = allFiles.length > 0 ? allFiles.length + ' file' + (allFiles.length > 1 ? 's' : '') + ' selected' : '';
       if (allFiles.length > 0) {
         document.getElementById('fg-photos').classList.remove('has-error');
+      }
+    }
+
+    // ── Rent Label Toggle ──
+    function toggleRentLabels(val) {
+      const mainLabel = document.getElementById('rent-main-label');
+      const incLabel = document.getElementById('rent-inc-label');
+      if (val === 'Flat') {
+        if (mainLabel) mainLabel.innerHTML = 'Total Flat Rent (₹) <span class="req">*</span>';
+        if (incLabel) incLabel.textContent = 'Stay Rent (₹) includes:';
+      } else {
+        if (mainLabel) mainLabel.innerHTML = 'Monthly Room/PG Rent per Person (₹) <span class="req">*</span>';
+        if (incLabel) incLabel.textContent = 'Stay Rent (₹) includes:';
       }
     }
 
@@ -2286,6 +2361,7 @@
 
       const data = {
         pgName: document.getElementById('pgname').value,
+        stayType: document.querySelector('input[name="staytype"]:checked')?.value || '',
         pgType: document.querySelector('input[name="pgtype"]:checked')?.value || '',
         location: document.getElementById('location').value,
         rent: document.getElementById('rent').value,
@@ -2376,6 +2452,7 @@
       const { error } = await supabaseClient.from('pg_listings').insert([
         {
           pg_name: data.pgName,
+          stay_type: data.stayType,
           pg_type: data.pgType,
           location: data.location,
           rent: data.rent ? Number(data.rent) : null,
