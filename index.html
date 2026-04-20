@@ -1839,11 +1839,14 @@
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 11l19-9-9 19-2-8-8-2z" />
             </svg>
-          <div class="field-group" id="fg-externalservice">
+            Mess / Tiffin Details
+          </div>
+
+          <div class="field-group" style="margin-bottom:18px;">
             <label>Service Type <span class="req">*</span></label>
-            <div class="radio-group" style="margin-bottom:12px;">
-              <label class="radio-pill"><input type="radio" name="externalservice" value="Mess" onchange="toggleExternalLabels('Mess')" checked /> Mess</label>
-              <label class="radio-pill"><input type="radio" name="externalservice" value="Tiffin" onchange="toggleExternalLabels('Tiffin')" /> Tiffin</label>
+            <div class="radio-group" style="margin-top:8px;">
+              <label class="radio-pill"><input type="radio" name="serviceType" value="Mess" onchange="toggleServiceLabels('Mess')" checked /> Mess</label>
+              <label class="radio-pill"><input type="radio" name="serviceType" value="Tiffin" onchange="toggleServiceLabels('Tiffin')" /> Tiffin</label>
             </div>
           </div>
 
@@ -1897,7 +1900,7 @@
 
           <div class="two-col">
             <div class="field-group" id="fg-messmonthly">
-              <label id="monthly-label">Monthly Charges (₹) <span class="req">*</span></label>
+              <label>Monthly Charges (₹) <span class="req">*</span></label>
               <input type="number" id="messMonthly" placeholder="e.g. 2500" min="500" />
               <div class="error-msg">Please enter monthly charges</div>
             </div>
@@ -2270,7 +2273,7 @@
           const ml = document.getElementById('messLandmark').value.trim();
           const mm = document.getElementById('messMonthly').value.trim();
           const meals = document.querySelectorAll('input[name="meal"]:checked');
-          const serviceType = document.querySelector('input[name="externalservice"]:checked')?.value;
+          const serviceType = document.querySelector('input[name="serviceType"]:checked')?.value;
 
           document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
           document.getElementById('fg-messlandmark').classList.toggle('has-error', !ml);
@@ -2354,16 +2357,16 @@
     }
 
     // ── External Service Toggle ──
-    function toggleExternalLabels(type) {
+    function toggleServiceLabels(type) {
+      const phoneFG = document.getElementById('fg-messphone');
+      const phoneLabel = phoneFG.querySelector('label');
       const nameFG = document.getElementById('fg-messaddress');
       const nameLabel = nameFG.querySelector('label');
-      const phoneLabel = document.querySelector('#fg-messphone label');
-      const monthlyLabel = document.getElementById('monthly-label');
       
       let errorMsg = nameFG.querySelector('.error-msg');
       if (type === 'Tiffin') {
-        nameLabel.innerHTML = 'Tiffin Provider Name <span class="req">*</span>';
         phoneLabel.innerHTML = 'Tiffin Owner Contact Number <span class="req">*</span>';
+        nameLabel.innerHTML = 'Tiffin Provider Name <span class="req">*</span>';
         if (!errorMsg) {
           const err = document.createElement('div');
           err.className = 'error-msg';
@@ -2371,8 +2374,8 @@
           nameFG.appendChild(err);
         }
       } else {
-        nameLabel.innerHTML = 'Mess Name';
         phoneLabel.innerHTML = 'Mess Owner Contact Number <span class="req">*</span>';
+        nameLabel.innerHTML = 'Mess Name';
         if (errorMsg) errorMsg.remove();
         nameFG.classList.remove('has-error');
       }
@@ -2482,7 +2485,7 @@
         rules: [...document.querySelectorAll('input[name="rule"]:checked')].map(i => i.value),
         foodAvailable: foodVal,
         foodFrequency: document.querySelector('input[name="foodfreq"]:checked')?.value || '',
-        externalServiceType: document.querySelector('input[name="externalservice"]:checked')?.value || '',
+        serviceType: document.querySelector('input[name="serviceType"]:checked')?.value || 'Mess',
         messPhone: document.getElementById('messPhone').value,
         messName: document.getElementById('messAddress').value,
         messAddress: document.getElementById('messLandmark').value,
@@ -2579,7 +2582,7 @@
           mess_name: data.messName,
           mess_address: data.messAddress,
           mess_meals: data.messMeals,
-          external_service_type: data.externalServiceType,
+          external_service_type: data.serviceType,
           mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
           mess_single_diet_charges: data.messSingleDietCharges ? Number(data.messSingleDietCharges) : null,
           gate_open: data.gateOpen,
