@@ -2451,7 +2451,8 @@
     }
 
     // ── Submit ──
-    function submitForm() {
+    // ── Submit ──
+    async function submitForm() {
       if (!confirm("Are you sure you are submitting the correct data? Please double-check all fields.")) return;
 
       const phone = document.getElementById('phone').value.trim();
@@ -2538,12 +2539,39 @@
         submittedAt: new Date().toISOString()
       };
 
-      sendToSupabase(data);
-      document.getElementById('step4').classList.remove('visible');
-      document.getElementById('successScreen').classList.add('visible');
-      updateProgress(5);
-      document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const btn = document.querySelector('.btn-submit');
+      const originalText = btn.textContent;
+      
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Uploading... Please wait';
+        btn.style.opacity = '0.7';
+        btn.style.cursor = 'not-allowed';
+
+        const result = await sendToSupabase(data);
+        
+        if (result.success) {
+          document.getElementById('step4').classList.remove('visible');
+          document.getElementById('successScreen').classList.add('visible');
+          updateProgress(5);
+          document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          alert('Submission failed: ' + (result.error?.message || 'Unknown error. Please try again.'));
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.style.opacity = '1';
+          btn.style.cursor = 'pointer';
+        }
+      } catch (err) {
+        console.error('Submit error:', err);
+        alert('An unexpected error occurred. Please check your internet and try again.');
+        btn.disabled = false;
+        btn.textContent = originalText;
+        btn.style.opacity = '1';
+        btn.style.cursor = 'pointer';
+      }
     }
+
 
 
     // ── Supabase config ──
@@ -2555,87 +2583,95 @@
 
     async function sendToSupabase(data) {
       if (!supabaseClient) {
-        alert('Supabase client not loaded. Please include the Supabase JS library.');
-        return;
+        return { success: false, error: { message: 'Supabase client not initialized.' } };
       }
 
-      // 1. Upload all photos/videos first
-      const photoUrls = [];
-      for (const file of allFiles) {
-        const ext = file.name.split('.').pop();
-        const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-        const filePath = `listings/${fileName}`;
+      try {
+        // 1. Upload all photos/videos first
+        const photoUrls = [];
+        for (const file of allFiles) {
+          const ext = file.name.split('.').pop();
+          const fileName = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+          const filePath = `listings/${fileName}`;
 
-        const { error: uploadError } = await supabaseClient.storage
-          .from('pg-photos')
-          .upload(filePath, file);
-
-        if (!uploadError) {
-          const { data: urlData } = supabaseClient.storage
+          const { error: uploadError } = await supabaseClient.storage
             .from('pg-photos')
-            .getPublicUrl(filePath);
-          photoUrls.push(urlData.publicUrl);
-        } else {
-          console.error('Upload error:', uploadError);
-        }
-      }
+            .upload(filePath, file);
 
-      // 2. Save listing with photo URLs
-      const { error } = await supabaseClient.from('pg_listings').insert([
-        {
-          pg_name: data.pgName,
-          stay_type: data.stayType,
-          pg_type: data.pgType,
-          location: data.location,
-          rent: data.rent ? Number(data.rent) : null,
-          rent_includes: data.rentIncludes,
-          deposit: data.deposit ? Number(data.deposit) : null,
-          room_type: data.roomType,
-          floor: data.floor,
-          room_no: data.roomNo,
-          vacating: data.vacating,
-          vacate_date: data.vacateDate,
-          total_photos: photoUrls.length,
-          photo_urls: photoUrls, // new column for URLs
-          primary_facilities: data.primaryFacilities,
-          bed_count: data.bedCount ? Number(data.bedCount) : null,
-          bed_vacant_count: data.bedVacantCount ? Number(data.bedVacantCount) : null,
-          mattress: data.mattress,
-          table_count: data.tableCount ? Number(data.tableCount) : null,
-          chair_count: data.chairCount ? Number(data.chairCount) : null,
-          window_count: data.windowCount ? Number(data.windowCount) : null,
-          almirah_count: data.almirahCount ? Number(data.almirahCount) : null,
-          sockets: data.sockets ? Number(data.sockets) : null,
-          bulbs: data.bulbs ? Number(data.bulbs) : null,
-          tube_lights: data.tubeLights ? Number(data.tubeLights) : null,
-          fans: data.fans ? Number(data.fans) : null,
-          bathroom_type: data.bathroomType,
-          bathroom_loc: data.bathroomLoc,
-          amenities: data.amenities,
-          rules: data.rules,
-          food_available: data.foodAvailable,
-          food_frequency: data.foodFrequency,
-          mess_phone: data.messPhone,
-          mess_name: data.messName,
-          mess_address: data.messAddress,
-          mess_landmark: '',
-          mess_meals: data.messMeals,
-          external_service_type: data.serviceType,
-          mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
-          mess_single_diet_charges: data.messSingleDietCharges ? Number(data.messSingleDietCharges) : null,
-          gate_open: data.gateOpen,
-          gate_close: data.gateClose,
-          issues: data.issues,
-          recommend: data.recommend,
-          phone: data.phone,
-          landlord_phone: data.landlordPhone,
-          submitted_at: data.submittedAt
-        },
-      ]);
-      if (error) {
-        console.error('Supabase insert error:', error);
-      } else {
+          if (!uploadError) {
+            const { data: urlData } = supabaseClient.storage
+              .from('pg-photos')
+              .getPublicUrl(filePath);
+            photoUrls.push(urlData.publicUrl);
+          } else {
+            console.error('Upload error for ' + file.name + ':', uploadError);
+            // We continue even if one photo fails, or we could throw error
+          }
+        }
+
+        // 2. Save listing with photo URLs
+        const { error } = await supabaseClient.from('pg_listings').insert([
+          {
+            pg_name: data.pgName,
+            stay_type: data.stayType,
+            pg_type: data.pgType,
+            location: data.location,
+            rent: data.rent ? Number(data.rent) : null,
+            rent_includes: data.rentIncludes,
+            deposit: data.deposit ? Number(data.deposit) : null,
+            room_type: data.roomType,
+            floor: data.floor,
+            room_no: data.roomNo,
+            vacating: data.vacating,
+            vacate_date: data.vacateDate,
+            total_photos: photoUrls.length,
+            photo_urls: photoUrls,
+            primary_facilities: data.primaryFacilities,
+            bed_count: data.bedCount ? Number(data.bedCount) : null,
+            bed_vacant_count: data.bedVacantCount ? Number(data.bedVacantCount) : null,
+            mattress: data.mattress,
+            table_count: data.tableCount ? Number(data.tableCount) : null,
+            chair_count: data.chairCount ? Number(data.chairCount) : null,
+            window_count: data.windowCount ? Number(data.windowCount) : null,
+            almirah_count: data.almirahCount ? Number(data.almirahCount) : null,
+            sockets: data.sockets ? Number(data.sockets) : null,
+            bulbs: data.bulbs ? Number(data.bulbs) : null,
+            tube_lights: data.tubeLights ? Number(data.tubeLights) : null,
+            fans: data.fans ? Number(data.fans) : null,
+            bathroom_type: data.bathroomType,
+            bathroom_loc: data.bathroomLoc,
+            amenities: data.amenities,
+            rules: data.rules,
+            food_available: data.foodAvailable,
+            food_frequency: data.foodFrequency,
+            mess_phone: data.messPhone,
+            mess_name: data.messName,
+            mess_address: data.messAddress,
+            mess_landmark: '',
+            mess_meals: data.messMeals,
+            external_service_type: data.serviceType,
+            mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
+            mess_single_diet_charges: data.messSingleDietCharges ? Number(data.messSingleDietCharges) : null,
+            gate_open: data.gateOpen,
+            gate_close: data.gateClose,
+            issues: data.issues,
+            recommend: data.recommend,
+            phone: data.phone,
+            landlord_phone: data.landlordPhone,
+            submitted_at: data.submittedAt
+          },
+        ]);
+
+        if (error) {
+          console.error('Supabase insert error:', error);
+          return { success: false, error: error };
+        }
+        
         console.log('Listing + photos saved!');
+        return { success: true };
+      } catch (err) {
+        console.error('Library error:', err);
+        return { success: false, error: err };
       }
     }
 
