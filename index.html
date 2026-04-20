@@ -1822,10 +1822,13 @@
               No</label>
           </div>
           <div class="sub-field" id="foodSub">
-            <label>Meal Frequency</label>
-            <div class="radio-group">
-              <label class="radio-pill"><input type="radio" name="foodfreq" value="2 times a day" /> 2 times/day</label>
-              <label class="radio-pill"><input type="radio" name="foodfreq" value="3 times a day" /> 3 times/day</label>
+            <div class="field-group" id="fg-foodfreq">
+              <label>Meal Frequency <span class="req">*</span></label>
+              <div class="radio-group" style="margin-top:8px;">
+                <label class="radio-pill"><input type="radio" name="foodfreq" value="2 times a day" /> 2 times/day</label>
+                <label class="radio-pill"><input type="radio" name="foodfreq" value="3 times a day" /> 3 times/day</label>
+              </div>
+              <div class="error-msg">Please select meal frequency</div>
             </div>
           </div>
         </div>
@@ -2091,12 +2094,22 @@
     populateYears();
 
     // ── Data Correction Toast ──
+    let toastAutoClose;
     setTimeout(() => {
-      document.getElementById('dataToast').classList.add('visible');
+      const toast = document.getElementById('dataToast');
+      if (toast) {
+        toast.classList.add('visible');
+        // Auto-disappear after 6 seconds
+        toastAutoClose = setTimeout(() => {
+          toast.classList.remove('visible');
+        }, 6000);
+      }
     }, 7500); // Trigger after 7.5 seconds
 
     function closeDataToast() {
-      document.getElementById('dataToast').classList.remove('visible');
+      if (toastAutoClose) clearTimeout(toastAutoClose);
+      const toast = document.getElementById('dataToast');
+      if (toast) toast.classList.remove('visible');
     }
 
     // ── State ──
@@ -2265,27 +2278,37 @@
       }
       if (step === 3) {
         const food = document.querySelector('input[name="food"]:checked');
-        if (!food) {
-          valid = false;
-        } else if (food.value === 'No') {
-          const mp = document.getElementById('messPhone').value.trim();
-          const ma = document.getElementById('messAddress').value.trim();
-          const ml = document.getElementById('messLandmark').value.trim();
-          const mm = document.getElementById('messMonthly').value.trim();
-          const meals = document.querySelectorAll('input[name="meal"]:checked');
-          const serviceType = document.querySelector('input[name="serviceType"]:checked')?.value;
+        if (food) {
+          if (food.value === 'Yes') {
+            const freq = document.querySelector('input[name="foodfreq"]:checked');
+            document.getElementById('fg-foodfreq').classList.toggle('has-error', !freq);
+            if (!freq) valid = false;
+          } else {
+            // Food is 'No' (External Mess/Tiffin)
+            const mp = document.getElementById('messPhone').value.trim();
+            const ma = document.getElementById('messAddress').value.trim();
+            const ml = document.getElementById('messLandmark').value.trim();
+            const mm = document.getElementById('messMonthly').value.trim();
+            const meals = document.querySelectorAll('input[name="meal"]:checked');
+            const serviceType = document.querySelector('input[name="serviceType"]:checked')?.value;
 
-          document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
-          document.getElementById('fg-messlandmark').classList.toggle('has-error', !ml);
-          document.getElementById('fg-meals').classList.toggle('has-error', meals.length === 0);
-          document.getElementById('fg-messmonthly').classList.toggle('has-error', !mm);
+            document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
+            document.getElementById('fg-meals').classList.toggle('has-error', meals.length === 0);
+            document.getElementById('fg-messmonthly').classList.toggle('has-error', !mm);
 
-          if (serviceType === 'Tiffin') {
-            document.getElementById('fg-messaddress').classList.toggle('has-error', !ma);
-            if (!ma) valid = false;
+            if (serviceType === 'Tiffin') {
+              document.getElementById('fg-messaddress').classList.toggle('has-error', !ma);
+              if (!ma) valid = false;
+              // Clear landmark error if Tiffin (field is hidden)
+              document.getElementById('fg-messlandmark').classList.remove('has-error');
+            } else {
+              // Mess Name is not strictly compulsory but Address is
+              document.getElementById('fg-messlandmark').classList.toggle('has-error', !ml);
+              if (!ml) valid = false;
+            }
+
+            if (mp.length !== 10 || meals.length === 0 || !mm) valid = false;
           }
-
-          if (mp.length !== 10 || !ml || meals.length === 0 || !mm) valid = false;
         }
       }
       return valid;
@@ -2362,11 +2385,13 @@
       const phoneLabel = phoneFG.querySelector('label');
       const nameFG = document.getElementById('fg-messaddress');
       const nameLabel = nameFG.querySelector('label');
+      const landmarkFG = document.getElementById('fg-messlandmark');
       
       let errorMsg = nameFG.querySelector('.error-msg');
       if (type === 'Tiffin') {
         phoneLabel.innerHTML = 'Tiffin Owner Contact Number <span class="req">*</span>';
         nameLabel.innerHTML = 'Tiffin Provider Name <span class="req">*</span>';
+        landmarkFG.style.display = 'none';
         if (!errorMsg) {
           const err = document.createElement('div');
           err.className = 'error-msg';
@@ -2376,6 +2401,7 @@
       } else {
         phoneLabel.innerHTML = 'Mess Owner Contact Number <span class="req">*</span>';
         nameLabel.innerHTML = 'Mess Name';
+        landmarkFG.style.display = 'block';
         if (errorMsg) errorMsg.remove();
         nameFG.classList.remove('has-error');
       }
