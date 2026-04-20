@@ -81,17 +81,39 @@
       color: var(--ink);
       margin-left: -6px;
     }
+
     .logo-text span {
       color: var(--accent);
     }
 
     @media (max-width: 420px) {
-      nav .logo { gap: 5px !important; }
-      nav .logo img { height: 38px; }
-      nav .logo-text { font-size: 1.3rem !important; letter-spacing: -0.2px !important; }
-      .nav-cta { padding: 8px 12px; font-size: 0.75rem; }
-      .radio-pill { padding: 6px 10px; font-size: 0.8rem; gap: 4px; }
-      .radio-group { gap: 4px; }
+      nav .logo {
+        gap: 5px !important;
+      }
+
+      nav .logo img {
+        height: 38px;
+      }
+
+      nav .logo-text {
+        font-size: 1.3rem !important;
+        letter-spacing: -0.2px !important;
+      }
+
+      .nav-cta {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+      }
+
+      .radio-pill {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        gap: 4px;
+      }
+
+      .radio-group {
+        gap: 4px;
+      }
     }
 
     .nav-cta {
@@ -1330,10 +1352,14 @@
         <div class="field-group" id="fg-staytype">
           <label>Stay Type <span class="req">*</span></label>
           <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="staytype" value="Room" onchange="toggleRentLabels(this.value)" /> Room</label>
-            <label class="radio-pill"><input type="radio" name="staytype" value="PG" onchange="toggleRentLabels(this.value)" /> PG</label>
-            <label class="radio-pill"><input type="radio" name="staytype" value="Flat" onchange="toggleRentLabels(this.value)" /> Flat</label>
-            <label class="radio-pill"><input type="radio" name="staytype" value="Family" onchange="toggleRentLabels(this.value)" /> Family</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Room"
+                onchange="toggleRentLabels(this.value)" /> Room</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="PG"
+                onchange="toggleRentLabels(this.value)" /> PG</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Flat"
+                onchange="toggleRentLabels(this.value)" /> Flat</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Family"
+                onchange="toggleRentLabels(this.value)" /> Family</label>
           </div>
           <div class="error-msg">Please select a stay type</div>
         </div>
@@ -1702,28 +1728,32 @@
             <label class="check-item">
               <input type="checkbox" name="rule" value="Induction Allowed" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg></div>
               <span class="check-label">Induction Allowed</span>
             </label>
             <label class="check-item">
               <input type="checkbox" name="rule" value="Kettle Allowed" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg></div>
               <span class="check-label">Kettle Allowed</span>
             </label>
             <label class="check-item">
               <input type="checkbox" name="rule" value="Iron Allowed" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg></div>
               <span class="check-label">Iron Allowed</span>
             </label>
             <label class="check-item">
               <input type="checkbox" name="rule" value="Gas Cylinder Allowed" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg></div>
               <span class="check-label">Gas Cylinder Allowed</span>
             </label>
@@ -1809,7 +1839,12 @@
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 11l19-9-9 19-2-8-8-2z" />
             </svg>
-            Mess / Tiffin Details
+          <div class="field-group" id="fg-externalservice">
+            <label>Service Type <span class="req">*</span></label>
+            <div class="radio-group" style="margin-bottom:12px;">
+              <label class="radio-pill"><input type="radio" name="externalservice" value="Mess" onchange="toggleExternalLabels('Mess')" checked /> Mess</label>
+              <label class="radio-pill"><input type="radio" name="externalservice" value="Tiffin" onchange="toggleExternalLabels('Tiffin')" /> Tiffin</label>
+            </div>
           </div>
 
           <div class="field-group" id="fg-messphone">
@@ -1862,7 +1897,7 @@
 
           <div class="two-col">
             <div class="field-group" id="fg-messmonthly">
-              <label>Monthly Charges (₹) <span class="req">*</span></label>
+              <label id="monthly-label">Monthly Charges (₹) <span class="req">*</span></label>
               <input type="number" id="messMonthly" placeholder="e.g. 2500" min="500" />
               <div class="error-msg">Please enter monthly charges</div>
             </div>
@@ -2008,7 +2043,8 @@
   </section>
 
   <footer>
-    <div style="display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; margin-bottom: 2px; margin-right: 4px;">
+    <div
+      style="display: inline-flex; align-items: center; gap: 6px; vertical-align: middle; margin-bottom: 2px; margin-right: 4px;">
       <img src="LOGO.png" alt="NestEzyy" style="height: 28px;">
       <span class="logo-text" style="font-size: 1.15rem; letter-spacing: -0.3px;">Nest<span>Ezyy</span></span>
     </div> · Built for students &amp; working professionals<br>
@@ -2234,11 +2270,17 @@
           const ml = document.getElementById('messLandmark').value.trim();
           const mm = document.getElementById('messMonthly').value.trim();
           const meals = document.querySelectorAll('input[name="meal"]:checked');
+          const serviceType = document.querySelector('input[name="externalservice"]:checked')?.value;
 
           document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
           document.getElementById('fg-messlandmark').classList.toggle('has-error', !ml);
           document.getElementById('fg-meals').classList.toggle('has-error', meals.length === 0);
           document.getElementById('fg-messmonthly').classList.toggle('has-error', !mm);
+
+          if (serviceType === 'Tiffin') {
+            document.getElementById('fg-messaddress').classList.toggle('has-error', !ma);
+            if (!ma) valid = false;
+          }
 
           if (mp.length !== 10 || !ml || meals.length === 0 || !mm) valid = false;
         }
@@ -2308,6 +2350,31 @@
       } else {
         if (mainLabel) mainLabel.innerHTML = 'Monthly Room/PG Rent per Person (₹) <span class="req">*</span>';
         if (incLabel) incLabel.textContent = 'Stay Rent (₹) includes:';
+      }
+    }
+
+    // ── External Service Toggle ──
+    function toggleExternalLabels(type) {
+      const nameFG = document.getElementById('fg-messaddress');
+      const nameLabel = nameFG.querySelector('label');
+      const phoneLabel = document.querySelector('#fg-messphone label');
+      const monthlyLabel = document.getElementById('monthly-label');
+      
+      let errorMsg = nameFG.querySelector('.error-msg');
+      if (type === 'Tiffin') {
+        nameLabel.innerHTML = 'Tiffin Provider Name <span class="req">*</span>';
+        phoneLabel.innerHTML = 'Tiffin Owner Contact Number <span class="req">*</span>';
+        if (!errorMsg) {
+          const err = document.createElement('div');
+          err.className = 'error-msg';
+          err.textContent = 'Please enter the tiffin provider name';
+          nameFG.appendChild(err);
+        }
+      } else {
+        nameLabel.innerHTML = 'Mess Name';
+        phoneLabel.innerHTML = 'Mess Owner Contact Number <span class="req">*</span>';
+        if (errorMsg) errorMsg.remove();
+        nameFG.classList.remove('has-error');
       }
     }
 
@@ -2415,6 +2482,7 @@
         rules: [...document.querySelectorAll('input[name="rule"]:checked')].map(i => i.value),
         foodAvailable: foodVal,
         foodFrequency: document.querySelector('input[name="foodfreq"]:checked')?.value || '',
+        externalServiceType: document.querySelector('input[name="externalservice"]:checked')?.value || '',
         messPhone: document.getElementById('messPhone').value,
         messName: document.getElementById('messAddress').value,
         messAddress: document.getElementById('messLandmark').value,
@@ -2511,6 +2579,7 @@
           mess_name: data.messName,
           mess_address: data.messAddress,
           mess_meals: data.messMeals,
+          external_service_type: data.externalServiceType,
           mess_monthly_charges: data.messMonthlyCharges ? Number(data.messMonthlyCharges) : null,
           mess_single_diet_charges: data.messSingleDietCharges ? Number(data.messSingleDietCharges) : null,
           gate_open: data.gateOpen,
