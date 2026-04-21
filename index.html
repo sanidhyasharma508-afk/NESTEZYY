@@ -2536,7 +2536,7 @@
         recommend: document.querySelector('input[name="recommend"]:checked')?.value || '',
         phone: phone,
         landlordPhone: landlordPhone,
-        submittedAt: new Date().toISOString()
+        submittedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
       };
 
       const btn = document.querySelector('.btn-submit');
