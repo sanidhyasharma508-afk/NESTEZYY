@@ -1791,48 +1791,165 @@
         <div class="sub-section">
           <div class="sub-section-title">Amenities</div>
           <div class="checkbox-grid">
-            <label class="check-item"><input type="checkbox" name="facility" value="Cooler" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">Cooler</span>
-            </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="Geyser" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">Geyser</span>
-            </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="Wi-Fi" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">Wi-Fi</span>
-            </label>
+            <div class="amenity-wrapper" style="display: flex; flex-direction: column;">
+              <label class="check-item"><input type="checkbox" name="facility" value="Cooler"
+                  onchange="toggleAmenityCost(this, 'coolerCostWrap')" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span class="check-label">Cooler</span>
+              </label>
+              <div id="coolerCostWrap" class="amenity-cost-wrap"
+                style="display:none; margin-top: 8px; padding: 10px; background: #FAFAF7; border: 1.5px solid var(--border); border-radius: 10px;">
+                <label style="font-size: 0.8rem; margin-bottom:4px;">Included in rent?</label>
+                <div class="radio-group" style="margin-bottom: 8px;">
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="coolerIncluded" value="Yes" onchange="toggleCostInput('coolerCostInput', false)" checked />
+                    Yes</label>
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="coolerIncluded" value="No" onchange="toggleCostInput('coolerCostInput', true)" /> No</label>
+                </div>
+                <div id="coolerCostInput" style="display:none;">
+                  <input type="number" id="coolerCost" placeholder="Monthly cost (₹)"
+                    style="padding: 8px; font-size: 0.85rem; width: 100%; border: 1.5px solid var(--border); border-radius: 8px;" />
+                </div>
+              </div>
+            </div>
+
+            <div class="amenity-wrapper" style="display: flex; flex-direction: column;">
+              <label class="check-item"><input type="checkbox" name="facility" value="Geyser"
+                  onchange="toggleAmenityCost(this, 'geyserCostWrap')" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span class="check-label">Geyser</span>
+              </label>
+              <div id="geyserCostWrap" class="amenity-cost-wrap"
+                style="display:none; margin-top: 8px; padding: 10px; background: #FAFAF7; border: 1.5px solid var(--border); border-radius: 10px;">
+                <label style="font-size: 0.8rem; margin-bottom:4px;">Included in rent?</label>
+                <div class="radio-group" style="margin-bottom: 8px;">
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="geyserIncluded" value="Yes" onchange="toggleCostInput('geyserCostInput', false)" checked />
+                    Yes</label>
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="geyserIncluded" value="No" onchange="toggleCostInput('geyserCostInput', true)" /> No</label>
+                </div>
+                <div id="geyserCostInput" style="display:none;">
+                  <input type="number" id="geyserCost" placeholder="Monthly cost (₹)"
+                    style="padding: 8px; font-size: 0.85rem; width: 100%; border: 1.5px solid var(--border); border-radius: 8px;" />
+                </div>
+              </div>
+            </div>
+
+            <div class="amenity-wrapper" style="display: flex; flex-direction: column;">
+              <label class="check-item"><input type="checkbox" name="facility" value="Wi-Fi"
+                  onchange="toggleAmenityCost(this, 'wifiCostWrap')" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span class="check-label">Wi-Fi</span>
+              </label>
+              <div id="wifiCostWrap" class="amenity-cost-wrap"
+                style="display:none; margin-top: 8px; padding: 10px; background: #FAFAF7; border: 1.5px solid var(--border); border-radius: 10px;">
+                <label style="font-size: 0.8rem; margin-bottom:4px;">Included in rent?</label>
+                <div class="radio-group" style="margin-bottom: 8px;">
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="wifiIncluded" value="Yes" onchange="toggleCostInput('wifiCostInput', false)" checked />
+                    Yes</label>
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="wifiIncluded" value="No" onchange="toggleCostInput('wifiCostInput', true)" /> No</label>
+                </div>
+                <div id="wifiCostInput" style="display:none;">
+                  <input type="number" id="wifiCost" placeholder="Monthly cost (₹)"
+                    style="padding: 8px; font-size: 0.85rem; width: 100%; border: 1.5px solid var(--border); border-radius: 8px;" />
+                </div>
+              </div>
+            </div>
+
+            <div class="amenity-wrapper" style="display: flex; flex-direction: column;">
+              <label class="check-item"><input type="checkbox" name="facility" value="Refrigerator"
+                  onchange="toggleAmenityCost(this, 'refrigeratorCostWrap')" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span class="check-label">Refrigerator</span>
+              </label>
+              <div id="refrigeratorCostWrap" class="amenity-cost-wrap"
+                style="display:none; margin-top: 8px; padding: 10px; background: #FAFAF7; border: 1.5px solid var(--border); border-radius: 10px;">
+                <label style="font-size: 0.8rem; margin-bottom:4px;">Included in rent?</label>
+                <div class="radio-group" style="margin-bottom: 8px;">
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="refrigeratorIncluded" value="Yes" onchange="toggleCostInput('refrigeratorCostInput', false)"
+                      checked /> Yes</label>
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="refrigeratorIncluded" value="No"
+                      onchange="toggleCostInput('refrigeratorCostInput', true)" /> No</label>
+                </div>
+                <div id="refrigeratorCostInput" style="display:none;">
+                  <input type="number" id="refrigeratorCost" placeholder="Monthly cost (₹)"
+                    style="padding: 8px; font-size: 0.85rem; width: 100%; border: 1.5px solid var(--border); border-radius: 8px;" />
+                </div>
+              </div>
+            </div>
+
+            <div class="amenity-wrapper" style="display: flex; flex-direction: column;">
+              <label class="check-item"><input type="checkbox" name="facility" value="AC"
+                  onchange="toggleAmenityCost(this, 'acCostWrap')" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span class="check-label">AC</span>
+              </label>
+              <div id="acCostWrap" class="amenity-cost-wrap"
+                style="display:none; margin-top: 8px; padding: 10px; background: #FAFAF7; border: 1.5px solid var(--border); border-radius: 10px;">
+                <label style="font-size: 0.8rem; margin-bottom:4px;">Included in rent?</label>
+                <div class="radio-group" style="margin-bottom: 8px;">
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="acIncluded" value="Yes" onchange="toggleCostInput('acCostInput', false)" checked />
+                    Yes</label>
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="acIncluded" value="No" onchange="toggleCostInput('acCostInput', true)" /> No</label>
+                </div>
+                <div id="acCostInput" style="display:none;">
+                  <input type="number" id="acCost" placeholder="Monthly cost (₹)"
+                    style="padding: 8px; font-size: 0.85rem; width: 100%; border: 1.5px solid var(--border); border-radius: 8px;" />
+                </div>
+              </div>
+            </div>
+
+            <div class="amenity-wrapper" style="display: flex; flex-direction: column;">
+              <label class="check-item"><input type="checkbox" name="facility" value="Laundry"
+                  onchange="toggleAmenityCost(this, 'laundryCostWrap')" />
+                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                      stroke-linejoin="round" />
+                  </svg></div><span class="check-label">Laundry</span>
+              </label>
+              <div id="laundryCostWrap" class="amenity-cost-wrap"
+                style="display:none; margin-top: 8px; padding: 10px; background: #FAFAF7; border: 1.5px solid var(--border); border-radius: 10px;">
+                <label style="font-size: 0.8rem; margin-bottom:4px;">Included in rent?</label>
+                <div class="radio-group" style="margin-bottom: 8px;">
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="laundryIncluded" value="Yes" onchange="toggleCostInput('laundryCostInput', false)"
+                      checked /> Yes</label>
+                  <label class="radio-pill" style="padding: 4px 8px; font-size: 0.75rem;"><input type="radio"
+                      name="laundryIncluded" value="No" onchange="toggleCostInput('laundryCostInput', true)" />
+                    No</label>
+                </div>
+                <div id="laundryCostInput" style="display:none;">
+                  <input type="number" id="laundryCost" placeholder="Monthly cost (₹)"
+                    style="padding: 8px; font-size: 0.85rem; width: 100%; border: 1.5px solid var(--border); border-radius: 8px;" />
+                </div>
+              </div>
+            </div>
+
             <label class="check-item"><input type="checkbox" name="facility" value="Kitchen" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Kitchen</span>
             </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="AC" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">AC</span>
-            </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="Laundry" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">Laundry</span>
-            </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="Refrigerator" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">Refrigerator</span>
-            </label>
+
             <label class="check-item"><input type="checkbox" name="facility" value="Power Backup" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
@@ -1900,71 +2017,77 @@
 
           <div class="field-group" style="margin-bottom:18px;">
             <label>Service Type <span class="req">*</span></label>
-            <div class="radio-group" style="margin-top:8px;">
+            <div class="radio-group" style="margin-top:8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
               <label class="radio-pill"><input type="radio" name="serviceType" value="Mess"
                   onchange="toggleServiceLabels('Mess')" checked /> Mess</label>
               <label class="radio-pill"><input type="radio" name="serviceType" value="Tiffin"
                   onchange="toggleServiceLabels('Tiffin')" /> Tiffin</label>
+              <label class="radio-pill"><input type="radio" name="serviceType" value="Flexible"
+                  onchange="toggleServiceLabels('Flexible')" /> Flexible</label>
+              <label class="radio-pill"><input type="radio" name="serviceType" value="Self-Cook"
+                  onchange="toggleServiceLabels('Self-Cook')" /> Self-Cook</label>
             </div>
           </div>
 
-          <div class="field-group" id="fg-messphone">
-            <label>Mess Owner Contact Number <span class="req">*</span></label>
-            <input type="tel" id="messPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric" />
-            <div class="error-msg" id="messphone-err">Please enter a valid 10-digit number</div>
-          </div>
-
-          <div class="field-group" id="fg-messaddress">
-            <label>Mess Name</label>
-            <input type="text" id="messAddress" placeholder="e.g. Shree Ram Tiffin Center" />
-          </div>
-
-          <div class="field-group" id="fg-messlandmark">
-            <label>Address (with nearby landmark) <span class="req">*</span></label>
-            <input type="text" id="messLandmark" placeholder="e.g. 12, Gandhi Nagar, Near bus stand" />
-            <div class="error-msg">Please enter the address and landmark</div>
-          </div>
-
-          <div class="field-group" id="fg-meals">
-            <label>Daily Meals Provided <span class="req">*</span></label>
-            <div class="checkbox-grid">
-              <label class="check-item">
-                <input type="checkbox" name="meal" value="Breakfast" />
-                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                  </svg></div>
-                <span class="check-label">Breakfast</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="meal" value="Lunch" />
-                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                  </svg></div>
-                <span class="check-label">Lunch</span>
-              </label>
-              <label class="check-item">
-                <input type="checkbox" name="meal" value="Dinner" />
-                <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                  </svg></div>
-                <span class="check-label">Dinner</span>
-              </label>
+          <div id="messDetailsWrapper">
+            <div class="field-group" id="fg-messphone">
+              <label>Mess Owner Contact Number <span class="req">*</span></label>
+              <input type="tel" id="messPhone" placeholder="10-digit number" maxlength="10" inputmode="numeric" />
+              <div class="error-msg" id="messphone-err">Please enter a valid 10-digit number</div>
             </div>
-            <div class="error-msg" id="meals-err">Please select at least one meal</div>
-          </div>
 
-          <div class="two-col">
-            <div class="field-group" id="fg-messmonthly">
-              <label>Monthly Charges (₹) <span class="req">*</span></label>
-              <input type="number" id="messMonthly" placeholder="e.g. 2500" min="500" />
-              <div class="error-msg">Please enter monthly charges</div>
+            <div class="field-group" id="fg-messaddress">
+              <label>Mess Name</label>
+              <input type="text" id="messAddress" placeholder="e.g. Shree Ram Tiffin Center" />
             </div>
-            <div class="field-group">
-              <label>Single Diet Charge</label>
-              <input type="number" id="messSingle" placeholder="e.g. 100" min="0" />
+
+            <div class="field-group" id="fg-messlandmark">
+              <label>Address (with nearby landmark) <span class="req">*</span></label>
+              <input type="text" id="messLandmark" placeholder="e.g. 12, Gandhi Nagar, Near bus stand" />
+              <div class="error-msg">Please enter the address and landmark</div>
+            </div>
+
+            <div class="field-group" id="fg-meals">
+              <label>Daily Meals Provided <span class="req">*</span></label>
+              <div class="checkbox-grid">
+                <label class="check-item">
+                  <input type="checkbox" name="meal" value="Breakfast" />
+                  <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg></div>
+                  <span class="check-label">Breakfast</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="meal" value="Lunch" />
+                  <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg></div>
+                  <span class="check-label">Lunch</span>
+                </label>
+                <label class="check-item">
+                  <input type="checkbox" name="meal" value="Dinner" />
+                  <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    </svg></div>
+                  <span class="check-label">Dinner</span>
+                </label>
+              </div>
+              <div class="error-msg" id="meals-err">Please select at least one meal</div>
+            </div>
+
+            <div class="two-col">
+              <div class="field-group" id="fg-messmonthly">
+                <label>Monthly Charges (₹) <span class="req">*</span></label>
+                <input type="number" id="messMonthly" placeholder="e.g. 2500" min="500" />
+                <div class="error-msg">Please enter monthly charges</div>
+              </div>
+              <div class="field-group">
+                <label>Single Diet Charge</label>
+                <input type="number" id="messSingle" placeholder="e.g. 100" min="0" />
+              </div>
             </div>
           </div>
         </div>
@@ -2283,6 +2406,8 @@
         if (food.value === 'Yes') {
           return document.querySelector('input[name="foodfreq"]:checked') !== null;
         } else {
+          const serviceType = document.querySelector('input[name="serviceType"]:checked')?.value;
+          if (serviceType === 'Flexible' || serviceType === 'Self-Cook') return true;
           const mp = document.getElementById('messPhone').value.trim();
           const mm = document.getElementById('messMonthly').value.trim();
           const meals = document.querySelectorAll('input[name="meal"]:checked');
@@ -2432,12 +2557,14 @@
             if (!freq) valid = false;
           } else {
             // Food is 'No' (External Mess/Tiffin)
+            const serviceType = document.querySelector('input[name="serviceType"]:checked')?.value;
+            if (serviceType === 'Flexible' || serviceType === 'Self-Cook') return true;
+
             const mp = document.getElementById('messPhone').value.trim();
             const ma = document.getElementById('messAddress').value.trim();
             const ml = document.getElementById('messLandmark').value.trim();
             const mm = document.getElementById('messMonthly').value.trim();
             const meals = document.querySelectorAll('input[name="meal"]:checked');
-            const serviceType = document.querySelector('input[name="serviceType"]:checked')?.value;
 
             document.getElementById('fg-messphone').classList.toggle('has-error', mp.length !== 10);
             document.getElementById('fg-meals').classList.toggle('has-error', meals.length === 0);
@@ -2541,24 +2668,36 @@
       const nameFG = document.getElementById('fg-messaddress');
       const nameLabel = nameFG.querySelector('label');
       const landmarkFG = document.getElementById('fg-messlandmark');
+      const wrapper = document.getElementById('messDetailsWrapper');
 
       let errorMsg = nameFG.querySelector('.error-msg');
-      if (type === 'Tiffin') {
-        phoneLabel.innerHTML = 'Tiffin Owner Contact Number <span class="req">*</span>';
-        nameLabel.innerHTML = 'Tiffin Provider Name <span class="req">*</span>';
-        landmarkFG.style.display = 'none';
-        if (!errorMsg) {
-          const err = document.createElement('div');
-          err.className = 'error-msg';
-          err.textContent = 'Please enter the tiffin provider name';
-          nameFG.appendChild(err);
-        }
-      } else {
-        phoneLabel.innerHTML = 'Mess Owner Contact Number <span class="req">*</span>';
-        nameLabel.innerHTML = 'Mess Name';
-        landmarkFG.style.display = 'block';
+      if (type === 'Flexible' || type === 'Self-Cook') {
+        if (wrapper) wrapper.style.display = 'none';
         if (errorMsg) errorMsg.remove();
         nameFG.classList.remove('has-error');
+      } else {
+        if (wrapper) wrapper.style.display = 'block';
+        if (type === 'Tiffin') {
+          phoneLabel.innerHTML = 'Tiffin Owner Contact Number <span class="req">*</span>';
+          nameLabel.innerHTML = 'Tiffin Provider Name <span class="req">*</span>';
+          landmarkFG.style.display = 'none';
+          phoneFG.style.display = 'block';
+          nameFG.style.display = 'block';
+          if (!errorMsg) {
+            const err = document.createElement('div');
+            err.className = 'error-msg';
+            err.textContent = 'Please enter the tiffin provider name';
+            nameFG.appendChild(err);
+          }
+        } else {
+          phoneLabel.innerHTML = 'Mess Owner Contact Number <span class="req">*</span>';
+          nameLabel.innerHTML = 'Mess Name';
+          landmarkFG.style.display = 'block';
+          phoneFG.style.display = 'block';
+          nameFG.style.display = 'block';
+          if (errorMsg) errorMsg.remove();
+          nameFG.classList.remove('has-error');
+        }
       }
     }
 
@@ -2623,16 +2762,19 @@
       // Mess phone — mandatory only if food = No
       const foodVal = document.querySelector('input[name="food"]:checked')?.value || '';
       if (foodVal === 'No') {
-        const messPhone = document.getElementById('messPhone').value.trim();
-        const fgM = document.getElementById('fg-messphone');
-        if (!/^[6-9]\d{9}$/.test(messPhone)) {
-          fgM.classList.add('has-error');
-          document.getElementById('messphone-err').style.display = 'block';
-          document.getElementById('messSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
+        const sType = document.querySelector('input[name="serviceType"]:checked')?.value;
+        if (sType !== 'Flexible' && sType !== 'Self-Cook') {
+          const messPhone = document.getElementById('messPhone').value.trim();
+          const fgM = document.getElementById('fg-messphone');
+          if (!/^[6-9]\d{9}$/.test(messPhone)) {
+            fgM.classList.add('has-error');
+            document.getElementById('messphone-err').style.display = 'block';
+            document.getElementById('messSection').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+          }
+          fgM.classList.remove('has-error');
+          document.getElementById('messphone-err').style.display = 'none';
         }
-        fgM.classList.remove('has-error');
-        document.getElementById('messphone-err').style.display = 'none';
       }
 
       const data = {
@@ -2665,7 +2807,20 @@
         fans: document.getElementById('fan-count').value,
         bathroomType: document.querySelector('input[name="bathtype"]:checked')?.value || '',
         bathroomLoc: document.querySelector('input[name="bathloc"]:checked')?.value || '',
-        amenities: [...document.querySelectorAll('input[name="facility"]:checked')].map(i => i.value),
+        amenities: [...document.querySelectorAll('input[name="facility"]:checked')].map(i => {
+          let val = i.value;
+          const mappedName = val === 'Wi-Fi' ? 'wifi' : val.toLowerCase();
+          const includedRadio = document.querySelector(`input[name="${mappedName}Included"]:checked`);
+          if (includedRadio) {
+            if (includedRadio.value === 'No') {
+              const cost = document.getElementById(`${mappedName}Cost`).value;
+              return `${val} (Additional: ₹${cost || '0'})`;
+            } else {
+              return `${val} (Included)`;
+            }
+          }
+          return val;
+        }),
         rules: [...document.querySelectorAll('input[name="rule"]:checked')].map(i => i.value),
         foodAvailable: foodVal,
         foodFrequency: document.querySelector('input[name="foodfreq"]:checked')?.value || '',
@@ -2929,6 +3084,24 @@
           closeCamera();
         }
       }, 'image/jpeg', 0.9);
+    }
+
+    function toggleAmenityCost(cb, wrapId) {
+      const wrap = document.getElementById(wrapId);
+      if (cb.checked) {
+        wrap.style.display = 'block';
+      } else {
+        wrap.style.display = 'none';
+      }
+    }
+
+    function toggleCostInput(inputId, show) {
+      const inputWrap = document.getElementById(inputId);
+      if (show) {
+        inputWrap.style.display = 'block';
+      } else {
+        inputWrap.style.display = 'none';
+      }
     }
   </script>
 
