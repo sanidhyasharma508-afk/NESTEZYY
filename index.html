@@ -393,7 +393,7 @@
       margin-bottom: 6px;
     }
 
-    label .req {
+    .req {
       color: var(--accent);
       margin-left: 2px;
     }
@@ -466,10 +466,11 @@
     }
 
     .rent-includes-label {
-      font-size: 0.8rem;
+      display: block;
+      font-size: 0.875rem;
       font-weight: 500;
-      color: var(--ink-soft);
-      margin-bottom: 8px;
+      color: var(--ink);
+      margin-bottom: 6px;
     }
 
     .rent-includes-opts {
@@ -481,16 +482,17 @@
     .ri-pill {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       border: 1.5px solid var(--border);
       border-radius: 100px;
-      padding: 6px 13px;
+      padding: 5px 10px;
       cursor: pointer;
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 500;
       transition: all 0.2s;
       background: #FAFAF7;
       user-select: none;
+      white-space: nowrap;
     }
 
     .ri-pill input {
@@ -1295,7 +1297,7 @@
     <p class="hero-sub">PG/Room + Food + Laundry — All in One Place</p>
     <div class="hero-pills">
       <span class="pill">Verified Listings</span>
-      <span class="pill">Mess Included</span>
+      <span class="pill">Mess Service</span>
       <span class="pill">Laundry Service</span>
       <span class="pill">Instant Connect</span>
     </div>
@@ -1348,16 +1350,30 @@
           <div class="error-msg">Please enter a location</div>
         </div>
 
+        <!-- Property Details (New) -->
+        <div class="two-col">
+          <div class="field-group" id="fg-totalrooms">
+            <label>Total Rentable Rooms <span class="req">*</span></label>
+            <input type="number" id="totalRooms" placeholder="e.g. 12" />
+            <div class="error-msg">Required</div>
+          </div>
+          <div class="field-group" id="fg-totalfloors">
+            <label>Total Rentable Floors <span class="req">*</span></label>
+            <input type="number" id="totalFloors" placeholder="e.g. 3" />
+            <div class="error-msg">Required</div>
+          </div>
+        </div>
+
         <!-- Stay Type added below landmark -->
         <div class="field-group" id="fg-staytype">
           <label>Stay Type <span class="req">*</span></label>
           <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="staytype" value="Room"
-                onchange="updateRentLabels()" /> Room</label>
-            <label class="radio-pill"><input type="radio" name="staytype" value="PG"
-                onchange="updateRentLabels()" /> PG</label>
-            <label class="radio-pill"><input type="radio" name="staytype" value="Flat"
-                onchange="updateRentLabels()" /> Flat</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Room" onchange="updateRentLabels()" />
+              Room</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="PG" onchange="updateRentLabels()" />
+              PG</label>
+            <label class="radio-pill"><input type="radio" name="staytype" value="Flat" onchange="updateRentLabels()" />
+              Flat</label>
           </div>
           <div class="error-msg">Please select a stay type</div>
         </div>
@@ -1366,10 +1382,14 @@
         <div class="field-group" id="fg-pgtype">
           <label>For <span class="req">*</span></label>
           <div class="radio-group">
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Boys" onchange="updateRentLabels()" /> Boys</label>
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Girls" onchange="updateRentLabels()" /> Girls</label>
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Co-ed" onchange="updateRentLabels()" /> Co-ed</label>
-            <label class="radio-pill"><input type="radio" name="pgtype" value="Family" onchange="updateRentLabels()" /> Family</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Boys" onchange="updateRentLabels()" />
+              Boys</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Girls" onchange="updateRentLabels()" />
+              Girls</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Co-ed" onchange="updateRentLabels()" />
+              Co-ed</label>
+            <label class="radio-pill"><input type="radio" name="pgtype" value="Family" onchange="updateRentLabels()" />
+              Family</label>
           </div>
           <div class="error-msg">Please select who this is for</div>
         </div>
@@ -1378,20 +1398,24 @@
           <label id="rent-main-label">Monthly Room/PG Rent per Person (₹) <span class="req">*</span></label>
           <input type="number" id="rent" placeholder="e.g. 6000" min="500" />
           <div class="error-msg">Please enter monthly rent</div>
-          <div class="rent-includes">
-            <div class="rent-includes-label" id="rent-inc-label">Stay Rent (₹) includes:</div>
+          <div class="rent-includes" id="fg-rentIncludes">
+            <div class="rent-includes-label" id="rent-inc-label">Rent Includes <span class="req">*</span></div>
             <div class="rent-includes-opts">
+              <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Stay Charges" />Stay Rent</label>
               <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Food" /> Food</label>
               <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Electricity" />
                 Electricity</label>
-              <label class="ri-pill"><input type="checkbox" name="rentIncludes" value="Cooler" /> Cooler</label>
+
             </div>
+            <div class="error-msg">Please select what is included in rent</div>
           </div>
         </div>
 
-        <div class="field-group">
-          <label>Security Deposit per Person (₹)</label>
+        <div class="field-group" id="fg-deposit">
+          <label>Security Deposit per Person (₹) <span class="req">*</span></label>
           <input type="number" id="deposit" placeholder="e.g. 10000" min="0" />
+          <div class="field-hint" style="font-size: 0.75rem;">(Enter “0” if no security deposit)</div>
+          <div class="error-msg">Please enter security deposit</div>
         </div>
 
         <div class="step-nav">
@@ -1430,8 +1454,8 @@
             </select>
             <div class="error-msg">Please select a floor</div>
           </div>
-          <div class="field-group">
-            <label>Room No.</label>
+          <div class="field-group" id="fg-roomno">
+            <label>Room No. <span class="req">*</span></label>
             <select id="roomno">
               <option value="">Select</option>
               <optgroup label="Left from entrance">
@@ -1449,7 +1473,7 @@
                 <option value="R5">R5</option>
               </optgroup>
             </select>
-            <div class="field-hint">L = Left, R = Right from entrance</div>
+            <div class="error-msg">Please select a room number</div>
           </div>
         </div>
 
@@ -1492,7 +1516,7 @@
 
         <!-- ── MULTI-PHOTO UPLOAD ── -->
         <div class="field-group" id="fg-photos">
-          <label>Upload Photos/Videos of your room <span class="req">*</span></label>
+          <label>Upload photos/videos of your building <span class="req">*</span></label>
           <div class="upload-actions">
             <!-- Button 1: Gallery (multiple select) -->
             <div class="upload-btn">
@@ -1544,8 +1568,18 @@
                 </svg></div>
             </div>
             <div class="fac-expand">
-              <div class="field-group" id="fg-bed-count"><label>Number of beds <span class="req">*</span></label><input
-                  type="number" id="bed-count" placeholder="e.g. 2" min="1" />
+              <div class="field-group" id="fg-bed-count">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <label style="margin-bottom: 0;">Number of beds <span class="req">*</span></label>
+                  <label class="inline-check" style="margin-top: 0;"><input type="checkbox" id="mattress" />
+                    <div class="inline-cb"><svg class="tick-icon" width="9" height="7" viewBox="0 0 10 8" fill="none">
+                        <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                          stroke-linejoin="round" />
+                      </svg></div><span
+                      style="font-size: 0.75rem; color: var(--ink-soft); font-weight: normal;">Mattress Provided</span>
+                  </label>
+                </div>
+                <input type="number" id="bed-count" placeholder="e.g. 2" min="1" />
                 <div class="error-msg">Required</div>
               </div>
               <div class="field-group" id="fg-bed-vacant-count"><label>Number of Beds Vacant <span
@@ -1553,12 +1587,6 @@
                   min="0" />
                 <div class="error-msg" id="bed-vacant-err">Required</div>
               </div>
-              <label class="inline-check"><input type="checkbox" id="mattress" />
-                <div class="inline-cb"><svg class="tick-icon" width="9" height="7" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                      stroke-linejoin="round" />
-                  </svg></div><span>Mattress Provided</span>
-              </label>
             </div>
           </div>
 
@@ -1620,7 +1648,7 @@
           <div class="fac-card" id="fac-almirah">
             <div class="fac-card-header" onclick="toggleFac('almirah')">
               <span class="fac-icon">🗄️</span>
-              <span class="fac-title">Almirah / Wardrobe</span>
+              <span class="fac-title">Almirah</span>
               <div class="fac-checkmark"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
@@ -1717,12 +1745,12 @@
               <span class="check-label">Smoking Allowed</span>
             </label>
             <label class="check-item">
-              <input type="checkbox" name="rule" value="Visitors of Other Gender Welcome" />
+              <input type="checkbox" name="rule" value="Visitors Allowed" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg></div>
-              <span class="check-label">Visitors of Other Gender Allowed</span>
+              <span class="check-label">Visitors Allowed</span>
             </label>
             <label class="check-item">
               <input type="checkbox" name="rule" value="Induction Allowed" />
@@ -1769,11 +1797,11 @@
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Cooler</span>
             </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="AC" />
+            <label class="check-item"><input type="checkbox" name="facility" value="Geyser" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
-                </svg></div><span class="check-label">AC</span>
+                </svg></div><span class="check-label">Geyser</span>
             </label>
             <label class="check-item"><input type="checkbox" name="facility" value="Wi-Fi" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
@@ -1781,23 +1809,47 @@
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Wi-Fi</span>
             </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Kitchen" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Kitchen</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="AC" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">AC</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Laundry" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Laundry</span>
+            </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="Refrigerator" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">Refrigerator</span>
+            </label>
             <label class="check-item"><input type="checkbox" name="facility" value="Power Backup" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Inverter</span>
             </label>
+            <label class="check-item"><input type="checkbox" name="facility" value="CCTV" />
+              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
+                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></div><span class="check-label">CCTV</span>
+            </label>
             <label class="check-item"><input type="checkbox" name="facility" value="Terrace" />
               <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
                   <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
                     stroke-linejoin="round" />
                 </svg></div><span class="check-label">Terrace</span>
-            </label>
-            <label class="check-item"><input type="checkbox" name="facility" value="Kitchen" />
-              <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg></div><span class="check-label">Kitchen</span>
             </label>
           </div>
         </div>
@@ -1875,7 +1927,7 @@
 
           <div class="field-group" id="fg-meals">
             <label>Daily Meals Provided <span class="req">*</span></label>
-            <div class="checkbox-grid" style="grid-template-columns:1fr 1fr 1fr;">
+            <div class="checkbox-grid">
               <label class="check-item">
                 <input type="checkbox" name="meal" value="Breakfast" />
                 <div class="check-box"><svg class="tick-icon" width="10" height="8" viewBox="0 0 10 8" fill="none">
@@ -2153,6 +2205,8 @@
       document.getElementById('step' + currentStep).classList.add('visible');
       updateProgress(currentStep);
       document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Update next button state for the new step
+      updateNextButtonState(currentStep);
     }
 
     function prevStep(from) {
@@ -2161,6 +2215,86 @@
       document.getElementById('step' + currentStep).classList.add('visible');
       updateProgress(currentStep);
       document.getElementById('list-pg').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Update next button state for the previous step
+      updateNextButtonState(currentStep);
+    }
+
+    // ── Button State Update ──
+    function updateNextButtonState(step) {
+      const stepEl = document.getElementById('step' + step);
+      if (!stepEl) return;
+      const nextBtn = stepEl.querySelector('.btn-next, .btn-submit');
+      if (!nextBtn) return;
+
+      const isValid = checkMandatoryOnly(step);
+      if (isValid) {
+        nextBtn.classList.remove('btn-disabled');
+        nextBtn.style.opacity = '1';
+        nextBtn.style.cursor = 'pointer';
+      } else {
+        nextBtn.classList.add('btn-disabled');
+        nextBtn.style.opacity = '0.5';
+        nextBtn.style.cursor = 'not-allowed';
+      }
+    }
+
+    function checkMandatoryOnly(step) {
+      if (step === 0) {
+        const pgname = document.getElementById('pgname').value.trim();
+        const loc = document.getElementById('location').value.trim();
+        const totalRooms = document.getElementById('totalRooms').value.trim();
+        const totalFloors = document.getElementById('totalFloors').value.trim();
+        const rent = document.getElementById('rent').value.trim();
+        const deposit = document.getElementById('deposit').value.trim();
+        const pgtype = document.querySelector('input[name="pgtype"]:checked');
+        const staytype = document.querySelector('input[name="staytype"]:checked');
+        const rentInc = document.querySelectorAll('input[name="rentIncludes"]:checked');
+        return pgname && loc && totalRooms && totalFloors && rent && rentInc.length > 0 && deposit && pgtype && staytype;
+      }
+      if (step === 1) {
+        const rt = document.getElementById('roomtype').value;
+        const floor = document.getElementById('floor').value;
+        const roomno = document.getElementById('roomno').value;
+        const vacate = document.querySelector('input[name="vacate"]:checked');
+        const photoValid = allFiles.length > 0;
+        let vacateDateValid = true;
+        if (vacate && vacate.value === 'Yes') {
+          const vm = document.getElementById('vacateMonth').value;
+          const vy = document.getElementById('vacateYear').value;
+          vacateDateValid = vm && vy;
+        }
+        return rt && floor && roomno && vacate && photoValid && vacateDateValid;
+      }
+      if (step === 2) {
+        const bathtype = document.querySelector('input[name="bathtype"]:checked');
+        const bathloc = document.querySelector('input[name="bathloc"]:checked');
+        if (!bathtype || !bathloc) return false;
+
+        // Bed count is mandatory if Bed facility is selected
+        const bedCard = document.getElementById('fac-bed');
+        if (bedCard && bedCard.classList.contains('selected')) {
+          if (!document.getElementById('bed-count').value.trim() || !document.getElementById('bed-vacant-count').value.trim()) return false;
+        }
+        return true;
+      }
+      if (step === 3) {
+        const food = document.querySelector('input[name="food"]:checked');
+        if (!food) return true;
+        if (food.value === 'Yes') {
+          return document.querySelector('input[name="foodfreq"]:checked') !== null;
+        } else {
+          const mp = document.getElementById('messPhone').value.trim();
+          const mm = document.getElementById('messMonthly').value.trim();
+          const meals = document.querySelectorAll('input[name="meal"]:checked');
+          return mp.length === 10 && mm !== '' && meals.length > 0;
+        }
+      }
+      if (step === 4) {
+        const phone = document.getElementById('phone').value.trim();
+        const landlordPhone = document.getElementById('landlordPhone').value.trim();
+        return phone.length === 10 && landlordPhone.length === 10;
+      }
+      return true;
     }
 
     // ── Validation ──
@@ -2169,26 +2303,36 @@
       if (step === 0) {
         const pgname = document.getElementById('pgname').value.trim();
         const loc = document.getElementById('location').value.trim();
+        const totalRooms = document.getElementById('totalRooms').value.trim();
+        const totalFloors = document.getElementById('totalFloors').value.trim();
         const rent = document.getElementById('rent').value.trim();
+        const deposit = document.getElementById('deposit').value.trim();
         const pgtype = document.querySelector('input[name="pgtype"]:checked');
         const staytype = document.querySelector('input[name="staytype"]:checked');
+        const rentInc = document.querySelectorAll('input[name="rentIncludes"]:checked');
 
         document.getElementById('fg-pgname').classList.toggle('has-error', !pgname);
         document.getElementById('fg-location').classList.toggle('has-error', !loc);
+        document.getElementById('fg-totalrooms').classList.toggle('has-error', !totalRooms);
+        document.getElementById('fg-totalfloors').classList.toggle('has-error', !totalFloors);
         document.getElementById('fg-rent').classList.toggle('has-error', !rent);
+        document.getElementById('fg-rentIncludes').classList.toggle('has-error', rentInc.length === 0);
+        document.getElementById('fg-deposit').classList.toggle('has-error', !deposit);
         document.getElementById('fg-pgtype').classList.toggle('has-error', !pgtype);
         document.getElementById('fg-staytype').classList.toggle('has-error', !staytype);
 
-        if (!pgname || !loc || !rent || !pgtype || !staytype) valid = false;
+        if (!pgname || !loc || !totalRooms || !totalFloors || !rent || rentInc.length === 0 || !deposit || !pgtype || !staytype) valid = false;
       }
       if (step === 1) {
         const rt = document.getElementById('roomtype').value;
         const floor = document.getElementById('floor').value;
+        const roomno = document.getElementById('roomno').value;
         const vacate = document.querySelector('input[name="vacate"]:checked');
         const photoValid = allFiles.length > 0;
 
         document.getElementById('fg-roomtype').classList.toggle('has-error', !rt);
         document.getElementById('fg-floor').classList.toggle('has-error', !floor);
+        document.getElementById('fg-roomno').classList.toggle('has-error', !roomno);
         document.getElementById('fg-vacate').classList.toggle('has-error', !vacate);
         document.getElementById('fg-photos').classList.toggle('has-error', !photoValid);
 
@@ -2205,7 +2349,7 @@
           }
         }
 
-        if (!rt || !floor || !vacate || !vacateDateValid || !photoValid) valid = false;
+        if (!rt || !floor || !roomno || !vacate || !vacateDateValid || !photoValid) valid = false;
       }
       if (step === 2) {
         // Bathroom validation
@@ -2384,9 +2528,9 @@
       } else {
         mainLabel.innerHTML = 'Monthly Room/PG Rent per Person (₹) <span class="req">*</span>';
       }
-      
+
       if (incLabel) {
-        incLabel.textContent = 'Stay Rent (₹) includes:';
+        incLabel.innerHTML = 'Rent Includes <span class="req">*</span>';
       }
     }
 
@@ -2496,6 +2640,8 @@
         stayType: document.querySelector('input[name="staytype"]:checked')?.value || '',
         pgType: document.querySelector('input[name="pgtype"]:checked')?.value || '',
         location: document.getElementById('location').value,
+        totalRooms: document.getElementById('totalRooms').value,
+        totalFloors: document.getElementById('totalFloors').value,
         rent: document.getElementById('rent').value,
         rentIncludes: [...document.querySelectorAll('input[name="rentIncludes"]:checked')].map(i => i.value),
         deposit: document.getElementById('deposit').value,
@@ -2541,7 +2687,7 @@
 
       const btn = document.querySelector('.btn-submit');
       const originalText = btn.textContent;
-      
+
       try {
         btn.disabled = true;
         btn.textContent = 'Uploading... Please wait';
@@ -2549,7 +2695,7 @@
         btn.style.cursor = 'not-allowed';
 
         const result = await sendToSupabase(data);
-        
+
         if (result.success) {
           document.getElementById('step4').classList.remove('visible');
           document.getElementById('successScreen').classList.add('visible');
@@ -2616,6 +2762,8 @@
             stay_type: data.stayType,
             pg_type: data.pgType,
             location: data.location,
+            total_rooms: data.totalRooms ? Number(data.totalRooms) : null,
+            total_floors: data.totalFloors ? Number(data.totalFloors) : null,
             rent: data.rent ? Number(data.rent) : null,
             rent_includes: data.rentIncludes,
             deposit: data.deposit ? Number(data.deposit) : null,
@@ -2666,7 +2814,7 @@
           console.error('Supabase insert error:', error);
           return { success: false, error: error };
         }
-        
+
         console.log('Listing + photos saved!');
         return { success: true };
       } catch (err) {
@@ -2675,10 +2823,20 @@
       }
     }
 
-    // Clear error on input
+    // Clear error on input + Real-time button state
     document.querySelectorAll('input, select').forEach(el => {
-      el.addEventListener('input', () => el.closest('.field-group')?.classList.remove('has-error'));
+      el.addEventListener('input', () => {
+        el.closest('.field-group')?.classList.remove('has-error');
+        updateNextButtonState(currentStep);
+      });
+      el.addEventListener('change', () => {
+        el.closest('.field-group')?.classList.remove('has-error');
+        updateNextButtonState(currentStep);
+      });
     });
+
+    // Initial check
+    updateNextButtonState(0);
 
     // ── Smart Header Logic ──
     let lastScrollY = window.scrollY;
